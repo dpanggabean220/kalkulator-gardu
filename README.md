@@ -2,7 +2,7 @@
 
 Kumpulan kalkulator teknik untuk teknisi gardu induk, teknisi transmisi, dan mahasiswa teknik elektro. Semua perhitungan berjalan langsung di browser, tanpa server, tanpa login, dan tanpa instalasi.
 
-**Buka aplikasi:** https://dpanggabean220-bot.github.io/kalkulator-gardu/
+**Buka aplikasi:** https://dpanggabean220.github.io/kalkulator-gardu/
 
 ## Daftar kalkulator
 
@@ -17,14 +17,14 @@ Kumpulan kalkulator teknik untuk teknisi gardu induk, teknisi transmisi, dan mah
 | 7 | Arus hubung singkat di terminal trafo | Dari rating trafo dan impedansi (%), hasil dalam kA | ✅ |
 | 8 | Arus sekunder CT dan burden | Panjang dan penampang kabel, rating burden | ✅ |
 | 9 | Waktu kerja relay OCR | Kurva IEC 60255: Standard, Very, Extremely Inverse | ✅ |
-| 10 | Cek grading margin dua relay OCR | | 🚧 Direncanakan |
+| 10 | Cek grading margin dua relay OCR | Kurva IEC SI/VI/EI, margin dibanding batas minimum, kasus relay tidak bekerja | ✅ |
 | 11 | Estimasi lokasi gangguan | Metode impedansi atau reaktansi, jarak dari kedua ujung | ✅ |
 | 12 | Drop tegangan saluran 3 fasa | Dengan R, X, dan cos φ beban | ✅ |
 | 13 | Rugi daya saluran | Satuan otomatis W / kW / MW | ✅ |
-| 14 | Andongan konduktor | | 🚧 Direncanakan |
+| 14 | Andongan konduktor | Pendekatan parabola, andongan dan panjang konduktor | ✅ |
 | 15 | Indeks polarisasi (PI) dan rasio absorpsi dielektrik (DAR) | Hasil uji tahanan isolasi | ✅ |
 | 16 | Koreksi tekanan SF6 ke 20 °C | Tekanan absolut atau relatif, cek terhadap batas | ✅ |
-| 17 | Konversi per-unit | | 🚧 Direncanakan |
+| 17 | Konversi per-unit | Besaran dasar, ohm ke pu, ganti basis | ✅ |
 | 18 | Konversi satuan | | ✅ |
 
 ## Cara pakai
@@ -34,6 +34,16 @@ Kumpulan kalkulator teknik untuk teknisi gardu induk, teknisi transmisi, dan mah
 **Offline:** unduh repositori (tombol **Code → Download ZIP**), ekstrak, lalu buka `index.html` langsung di browser. Aplikasi sengaja dibuat bisa berjalan lewat `file://` tanpa server.
 
 Angka ditulis dengan format Indonesia: koma sebagai desimal (contoh: `0,85`).
+
+### Pasang di HP (bisa dipakai tanpa sinyal)
+
+Aplikasi ini mendukung Progressive Web App (PWA):
+1. Buka tautan di browser HP:
+   - Android: Chrome → menu titik tiga → Tambahkan ke layar utama / Instal aplikasi
+   - iPhone: Safari → tombol Bagikan (kotak dengan panah ke atas) → Tambahkan ke Layar Utama
+2. Buka aplikasi sekali saat online agar semua aset tersimpan ke cache.
+3. Setelah itu, aplikasi bisa dipakai tanpa sinyal di lapangan.
+4. Jika ada versi baru, versi baru tampil di pembukaan kedua setelah online.
 
 ## Batasan dan catatan penting
 
@@ -52,7 +62,10 @@ kalkulator-gardu/
 ├── css/style.css        # tampilan
 ├── js/rumus.js          # semua rumus, berupa fungsi murni
 ├── js/ui.js             # logika tampilan dan validasi input
-└── tests/rumus.test.js  # unit test
+├── tests/rumus.test.js  # unit test
+├── manifest.json        # data PWA: nama aplikasi, ikon, warna
+├── sw.js                # service worker: cache agar jalan tanpa sinyal
+└── icons/               # ikon PWA (PNG)
 ```
 
 Menjalankan test:
@@ -67,10 +80,11 @@ Prinsip pengembangan:
 - Tanpa ES module dan tanpa dependensi eksternal, agar tetap jalan lewat `file://`.
 - Setiap rumus punya **kasus uji pembeda**: nilai uji dipilih supaya rumus yang salah (misalnya terbalik, atau salah acuan absolut/relatif) pasti gagal test.
 - Pesan error tampil di dekat kolom input, tanpa `alert()`.
+- Setiap perubahan file yang di-cache wajib menaikkan CACHE_VERSION di sw.js dan ?v= di index.html.
 
 ## Masukan
 
-Temukan hasil yang salah atau punya ide kalkulator baru? Silakan buka [Issue](https://github.com/dpanggabean220-bot/kalkulator-gardu/issues) dan sertakan input, hasil yang muncul, serta hasil yang Anda harapkan.
+Temukan hasil yang salah atau punya ide kalkulator baru? Silakan buka [Issue](https://github.com/dpanggabean220/kalkulator-gardu/issues) dan sertakan input, hasil yang muncul, serta hasil yang Anda harapkan.
 
 ---
 
