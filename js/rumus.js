@@ -968,6 +968,98 @@ Rumus.gantiBasisPU = function(Z_pu_lama, kV_lama, MVA_lama, kV_baru, MVA_baru) {
     return Z_pu_lama * (rasioTegangan * rasioTegangan) * (MVA_baru / MVA_lama);
 };
 
+/**
+ * Kalkulator 10: Cek grading margin dua relay OCR
+ * @param {number} I_gangguan - Arus gangguan dalam A
+ * @param {{kurva: string, TMS: number, I_set: number}} hilir - Parameter relay hilir (dekat gangguan)
+ * @param {{kurva: string, TMS: number, I_set: number}} hulu - Parameter relay hulu (cadangan)
+ * @param {number} marginMin - Margin minimum koordinasi dalam detik
+ * @returns {{t_hilir: number|null, t_hulu: number|null, margin: number|null, status: string}}
+ * @throws {Error} Jika input tidak valid
+ */
+Rumus.gradingMarginOCR = function(I_gangguan, hilir, hulu, marginMin) {
+    if (typeof I_gangguan !== 'number' || isNaN(I_gangguan)) {
+        throw new Error('Arus gangguan harus berupa angka');
+    }
+    if (I_gangguan <= 0) {
+        throw new Error('Arus gangguan harus lebih besar dari nol');
+    }
+    if (typeof marginMin !== 'number' || isNaN(marginMin)) {
+        throw new Error('Margin minimum harus berupa angka');
+    }
+    if (marginMin <= 0) {
+        throw new Error('Margin minimum harus lebih besar dari nol');
+    }
+
+    if (!hilir || typeof hilir !== 'object') {
+        throw new Error('Data relay hilir harus berupa objek');
+    }
+    if (typeof hilir.kurva !== 'string' || !['SI', 'VI', 'EI'].includes(hilir.kurva)) {
+        throw new Error('Kurva relay hilir harus SI, VI, atau EI');
+    }
+    if (typeof hilir.TMS !== 'number' || isNaN(hilir.TMS)) {
+        throw new Error('TMS relay hilir harus berupa angka');
+    }
+    if (hilir.TMS <= 0) {
+        throw new Error('TMS relay hilir harus lebih besar dari nol');
+    }
+    if (typeof hilir.I_set !== 'number' || isNaN(hilir.I_set)) {
+        throw new Error('I_set relay hilir harus berupa angka');
+    }
+    if (hilir.I_set <= 0) {
+        throw new Error('I_set relay hilir harus lebih besar dari nol');
+    }
+
+    if (!hulu || typeof hulu !== 'object') {
+        throw new Error('Data relay hulu harus berupa objek');
+    }
+    if (typeof hulu.kurva !== 'string' || !['SI', 'VI', 'EI'].includes(hulu.kurva)) {
+        throw new Error('Kurva relay hulu harus SI, VI, atau EI');
+    }
+    if (typeof hulu.TMS !== 'number' || isNaN(hulu.TMS)) {
+        throw new Error('TMS relay hulu harus berupa angka');
+    }
+    if (hulu.TMS <= 0) {
+        throw new Error('TMS relay hulu harus lebih besar dari nol');
+    }
+    if (typeof hulu.I_set !== 'number' || isNaN(hulu.I_set)) {
+        throw new Error('I_set relay hulu harus berupa angka');
+    }
+    if (hulu.I_set <= 0) {
+        throw new Error('I_set relay hulu harus lebih besar dari nol');
+    }
+
+    const t_hilir = Rumus.waktuKerjaRelayOCR(hilir.kurva, hilir.TMS, I_gangguan / hilir.I_set);
+    const t_hulu = Rumus.waktuKerjaRelayOCR(hulu.kurva, hulu.TMS, I_gangguan / hulu.I_set);
+
+    let margin = null;
+    let status = '';
+
+    if (t_hilir === null && t_hulu === null) {
+        status = 'kedua tidak bekerja';
+    } else if (t_hilir === null) {
+        status = 'hilir tidak bekerja';
+    } else if (t_hulu === null) {
+        status = 'hulu tidak bekerja';
+    } else {
+        margin = t_hulu - t_hilir;
+        if (margin >= marginMin) {
+            status = 'selektif';
+        } else if (margin >= 0) {
+            status = 'margin kurang';
+        } else {
+            status = 'tidak selektif';
+        }
+    }
+
+    return {
+        t_hilir: t_hilir,
+        t_hulu: t_hulu,
+        margin: margin,
+        status: status
+    };
+};
+
 // Supaya bisa diuji dengan Node
 if (typeof module !== "undefined") {
     module.exports = Rumus;

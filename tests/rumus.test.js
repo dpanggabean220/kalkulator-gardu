@@ -1454,3 +1454,92 @@ test('Konversi per-unit - input bukan angka (string) dan NaN', async t => {
     { message: 'Tegangan dasar lama kV harus berupa angka' }
   );
 });
+
+
+// Kalkulator 10: Cek Grading Margin Dua Relay OCR
+test('Grading margin OCR - kasus 1: hilir SI/0.1/400, hulu SI/0.2/600 (selektif)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: 0.2, I_set: 600 }, 0.3);
+  assertCloseTo(result.t_hilir, 0.297, 0.001, 't_hilir harus ~0.297 s');
+  assertCloseTo(result.t_hulu, 0.724, 0.001, 't_hulu harus ~0.724 s');
+  assertCloseTo(result.margin, 0.427, 0.001, 'margin harus ~0.427 s');
+  assert.strictEqual(result.status, 'selektif');
+});
+
+test('Grading margin OCR - kasus 2: hilir VI/0.1/400, hulu EI/0.5/500 (selektif)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'VI', TMS: 0.1, I_set: 400 }, { kurva: 'EI', TMS: 0.5, I_set: 500 }, 0.3);
+  assertCloseTo(result.t_hilir, 0.150, 0.001, 't_hilir harus ~0.150 s');
+  assertCloseTo(result.t_hulu, 0.635, 0.001, 't_hulu harus ~0.635 s');
+  assertCloseTo(result.margin, 0.485, 0.001, 'margin harus ~0.485 s');
+  assert.strictEqual(result.status, 'selektif');
+});
+
+test('Grading margin OCR - kasus 3: hilir SI/0.1/400, hulu EI/0.5/500 (selektif)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'EI', TMS: 0.5, I_set: 500 }, 0.3);
+  assertCloseTo(result.t_hilir, 0.297, 0.001, 't_hilir harus ~0.297 s');
+  assertCloseTo(result.t_hulu, 0.635, 0.001, 't_hulu harus ~0.635 s');
+  assertCloseTo(result.margin, 0.338, 0.001, 'margin harus ~0.338 s');
+  assert.strictEqual(result.status, 'selektif');
+});
+
+test('Grading margin OCR - kasus 4: hilir SI/0.1/400, hulu SI/0.1/500 (margin kurang)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: 0.1, I_set: 500 }, 0.3);
+  assertCloseTo(result.margin, 0.033, 0.001, 'margin harus ~0.033 s');
+  assert.strictEqual(result.status, 'margin kurang');
+});
+
+test('Grading margin OCR - kasus 5: hilir SI/0.2/600, hulu SI/0.1/400 (tidak selektif)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.2, I_set: 600 }, { kurva: 'SI', TMS: 0.1, I_set: 400 }, 0.3);
+  assertCloseTo(result.margin, -0.427, 0.001, 'margin harus ~ -0.427 s');
+  assert.strictEqual(result.status, 'tidak selektif');
+});
+
+test('Grading margin OCR - kasus 6: hilir SI/0.1/400, hulu SI/0.2/5000 (hulu tidak bekerja)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: 0.2, I_set: 5000 }, 0.3);
+  assertCloseTo(result.t_hilir, 0.297, 0.001, 't_hilir harus ~0.297 s');
+  assert.strictEqual(result.t_hulu, null, 't_hulu harus null');
+  assert.strictEqual(result.margin, null, 'margin harus null');
+  assert.strictEqual(result.status, 'hulu tidak bekerja');
+});
+
+test('Grading margin OCR - kasus 7: hilir SI/0.1/5000, hulu SI/0.2/600 (hilir tidak bekerja)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 5000 }, { kurva: 'SI', TMS: 0.2, I_set: 600 }, 0.3);
+  assert.strictEqual(result.t_hilir, null, 't_hilir harus null');
+  assertCloseTo(result.t_hulu, 0.724, 0.001, 't_hulu harus ~0.724 s');
+  assert.strictEqual(result.margin, null, 'margin harus null');
+  assert.strictEqual(result.status, 'hilir tidak bekerja');
+});
+
+test('Grading margin OCR - kasus 8: hilir SI/0.1/5000, hulu SI/0.2/5000 (kedua tidak bekerja)', async t => {
+  const result = Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 5000 }, { kurva: 'SI', TMS: 0.2, I_set: 5000 }, 0.3);
+  assert.strictEqual(result.t_hilir, null, 't_hilir harus null');
+  assert.strictEqual(result.t_hulu, null, 't_hulu harus null');
+  assert.strictEqual(result.margin, null, 'margin harus null');
+  assert.strictEqual(result.status, 'kedua tidak bekerja');
+});
+
+test('Grading margin OCR - input tidak valid: arus gangguan 0, TMS hulu negatif, I_set hilir 0, margin minimum 0, kurva XX', async t => {
+  assert.throws(
+    () => Rumus.gradingMarginOCR(0, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: 0.2, I_set: 600 }, 0.3),
+    { message: 'Arus gangguan harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: -0.2, I_set: 600 }, 0.3),
+    { message: 'TMS relay hulu harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 0 }, { kurva: 'SI', TMS: 0.2, I_set: 600 }, 0.3),
+    { message: 'I_set relay hilir harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: 0.2, I_set: 600 }, 0),
+    { message: 'Margin minimum harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gradingMarginOCR(4000, { kurva: 'XX', TMS: 0.1, I_set: 400 }, { kurva: 'SI', TMS: 0.2, I_set: 600 }, 0.3),
+    { message: 'Kurva relay hilir harus SI, VI, atau EI' }
+  );
+  assert.throws(
+    () => Rumus.gradingMarginOCR(4000, { kurva: 'SI', TMS: 0.1, I_set: 400 }, { kurva: 'XX', TMS: 0.2, I_set: 600 }, 0.3),
+    { message: 'Kurva relay hulu harus SI, VI, atau EI' }
+  );
+});
