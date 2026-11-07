@@ -860,6 +860,114 @@ Rumus.koreksiTekananSF6 = function(P_ukur, jenisTekanan, satuan, T, batasMinimum
     };
 };
 
+/**
+ * Kalkulator 17: Hitung besaran dasar sistem per-unit (Z_base dan I_base)
+ * @param {number} kV - Tegangan dasar dalam kV
+ * @param {number} MVA - Daya dasar dalam MVA
+ * @returns {{Z_base: number, I_base: number}} Objek dengan impedansi dasar (Ω) dan arus dasar (A)
+ * @throws {Error} Jika input tidak valid
+ */
+Rumus.besaranDasarPU = function(kV, MVA) {
+    if (typeof kV !== 'number' || isNaN(kV)) {
+        throw new Error('Tegangan dasar kV harus berupa angka');
+    }
+    if (kV <= 0) {
+        throw new Error('Tegangan dasar kV harus lebih besar dari nol');
+    }
+    if (typeof MVA !== 'number' || isNaN(MVA)) {
+        throw new Error('Daya dasar MVA harus berupa angka');
+    }
+    if (MVA <= 0) {
+        throw new Error('Daya dasar MVA harus lebih besar dari nol');
+    }
+
+    const Z_base = (kV * kV) / MVA;
+    const I_base = (MVA * 1000) / (Math.sqrt(3) * kV);
+
+    return {
+        Z_base: Z_base,
+        I_base: I_base
+    };
+};
+
+/**
+ * Kalkulator 17: Konversi nilai ohm ke per-unit
+ * @param {number} Z_ohm - Impedansi dalam Ω
+ * @param {number} kV - Tegangan dasar dalam kV
+ * @param {number} MVA - Daya dasar dalam MVA
+ * @returns {number} Z_pu - Impedansi dalam per-unit
+ * @throws {Error} Jika input tidak valid
+ */
+Rumus.ohmKePU = function(Z_ohm, kV, MVA) {
+    if (typeof Z_ohm !== 'number' || isNaN(Z_ohm)) {
+        throw new Error('Impedansi harus berupa angka');
+    }
+    if (Z_ohm <= 0) {
+        throw new Error('Impedansi harus lebih besar dari nol');
+    }
+    if (typeof kV !== 'number' || isNaN(kV)) {
+        throw new Error('Tegangan dasar kV harus berupa angka');
+    }
+    if (kV <= 0) {
+        throw new Error('Tegangan dasar kV harus lebih besar dari nol');
+    }
+    if (typeof MVA !== 'number' || isNaN(MVA)) {
+        throw new Error('Daya dasar MVA harus berupa angka');
+    }
+    if (MVA <= 0) {
+        throw new Error('Daya dasar MVA harus lebih besar dari nol');
+    }
+
+    const base = Rumus.besaranDasarPU(kV, MVA);
+    return Z_ohm / base.Z_base;
+};
+
+/**
+ * Kalkulator 17: Konversi basis nilai per-unit
+ * @param {number} Z_pu_lama - Impedansi per-unit lama
+ * @param {number} kV_lama - Tegangan dasar lama dalam kV
+ * @param {number} MVA_lama - Daya dasar lama dalam MVA
+ * @param {number} kV_baru - Tegangan dasar baru dalam kV
+ * @param {number} MVA_baru - Daya dasar baru dalam MVA
+ * @returns {number} Z_pu_baru - Impedansi per-unit baru
+ * @throws {Error} Jika input tidak valid
+ */
+Rumus.gantiBasisPU = function(Z_pu_lama, kV_lama, MVA_lama, kV_baru, MVA_baru) {
+    if (typeof Z_pu_lama !== 'number' || isNaN(Z_pu_lama)) {
+        throw new Error('Impedansi pu lama harus berupa angka');
+    }
+    if (Z_pu_lama <= 0) {
+        throw new Error('Impedansi pu lama harus lebih besar dari nol');
+    }
+    if (typeof kV_lama !== 'number' || isNaN(kV_lama)) {
+        throw new Error('Tegangan dasar lama kV harus berupa angka');
+    }
+    if (kV_lama <= 0) {
+        throw new Error('Tegangan dasar lama kV harus lebih besar dari nol');
+    }
+    if (typeof MVA_lama !== 'number' || isNaN(MVA_lama)) {
+        throw new Error('Daya dasar lama MVA harus berupa angka');
+    }
+    if (MVA_lama <= 0) {
+        throw new Error('Daya dasar lama MVA harus lebih besar dari nol');
+    }
+    if (typeof kV_baru !== 'number' || isNaN(kV_baru)) {
+        throw new Error('Tegangan dasar baru kV harus berupa angka');
+    }
+    if (kV_baru <= 0) {
+        throw new Error('Tegangan dasar baru kV harus lebih besar dari nol');
+    }
+    if (typeof MVA_baru !== 'number' || isNaN(MVA_baru)) {
+        throw new Error('Daya dasar baru MVA harus berupa angka');
+    }
+    if (MVA_baru <= 0) {
+        throw new Error('Daya dasar baru MVA harus lebih besar dari nol');
+    }
+
+    const rasioTegangan = kV_lama / kV_baru;
+    return Z_pu_lama * (rasioTegangan * rasioTegangan) * (MVA_baru / MVA_lama);
+};
+
 // Supaya bisa diuji dengan Node
 if (typeof module !== "undefined") {
     module.exports = Rumus;

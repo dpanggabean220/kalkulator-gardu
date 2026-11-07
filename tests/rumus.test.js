@@ -1353,3 +1353,104 @@ test('Koreksi tekanan SF6 - 0,5487 MPa relatif, 35 °C, batas 0,50 → tidak ada
   assert.strictEqual(result.satuan, 'MPa', 'Satuan harus MPa');
   assert.strictEqual(result.peringatan, null, 'Tidak ada peringatan karena P20 relatif >= batas');
 });
+
+
+// Kalkulator 17: Konversi Per-Unit
+test('Konversi per-unit - besaran dasar: 150 kV, 100 MVA', async t => {
+  const dasar = Rumus.besaranDasarPU(150, 100);
+  assertCloseTo(dasar.Z_base, 225, 0.001, 'Z_base harus 225 Ω');
+  assertCloseTo(dasar.I_base, 384.90, 0.01, 'I_base harus 384.90 A');
+});
+
+test('Konversi per-unit - ohm ke pu: 45 Ω, 150 kV, 100 MVA', async t => {
+  const pu = Rumus.ohmKePU(45, 150, 100);
+  assertCloseTo(pu, 0.20, 0.0001, 'Z_pu harus 0.20 pu');
+});
+
+test('Konversi per-unit - ohm ke pu: 8.5 Ω, 150 kV, 100 MVA', async t => {
+  const pu = Rumus.ohmKePU(8.5, 150, 100);
+  assertCloseTo(pu, 0.037778, 0.000001, 'Z_pu harus 0.037778 pu');
+});
+
+test('Konversi per-unit - ganti basis: 0.12 pu, 150 kV/60 MVA ke 150 kV/100 MVA', async t => {
+  const puBaru = Rumus.gantiBasisPU(0.12, 150, 60, 150, 100);
+  assertCloseTo(puBaru, 0.2, 0.0001, 'Z_pu_baru harus 0.2 pu');
+});
+
+test('Konversi per-unit - ganti basis: 0.1 pu, 10 kV/50 MVA ke 20 kV/100 MVA', async t => {
+  const puBaru = Rumus.gantiBasisPU(0.1, 10, 50, 20, 100);
+  assertCloseTo(puBaru, 0.05, 0.0001, 'Z_pu_baru harus 0.05 pu');
+});
+
+test('Konversi per-unit - input tidak valid: impedansi 0 dan negatif', async t => {
+  assert.throws(
+    () => Rumus.ohmKePU(0, 150, 100),
+    { message: 'Impedansi harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.ohmKePU(-5, 150, 100),
+    { message: 'Impedansi harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gantiBasisPU(0, 150, 60, 150, 100),
+    { message: 'Impedansi pu lama harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gantiBasisPU(-0.1, 150, 60, 150, 100),
+    { message: 'Impedansi pu lama harus lebih besar dari nol' }
+  );
+});
+
+test('Konversi per-unit - input tidak valid: kV 0 dan MVA negatif', async t => {
+  assert.throws(
+    () => Rumus.besaranDasarPU(0, 100),
+    { message: 'Tegangan dasar kV harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.besaranDasarPU(150, -100),
+    { message: 'Daya dasar MVA harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.ohmKePU(10, 0, 100),
+    { message: 'Tegangan dasar kV harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.ohmKePU(10, 150, -100),
+    { message: 'Daya dasar MVA harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gantiBasisPU(0.1, 150, 60, 0, 100),
+    { message: 'Tegangan dasar baru kV harus lebih besar dari nol' }
+  );
+  assert.throws(
+    () => Rumus.gantiBasisPU(0.1, 150, 60, 150, -100),
+    { message: 'Daya dasar baru MVA harus lebih besar dari nol' }
+  );
+});
+
+test('Konversi per-unit - input bukan angka (string) dan NaN', async t => {
+  assert.throws(
+    () => Rumus.besaranDasarPU('150', 100),
+    { message: 'Tegangan dasar kV harus berupa angka' }
+  );
+  assert.throws(
+    () => Rumus.besaranDasarPU(150, NaN),
+    { message: 'Daya dasar MVA harus berupa angka' }
+  );
+  assert.throws(
+    () => Rumus.ohmKePU('45', 150, 100),
+    { message: 'Impedansi harus berupa angka' }
+  );
+  assert.throws(
+    () => Rumus.ohmKePU(45, 150, '100'),
+    { message: 'Daya dasar MVA harus berupa angka' }
+  );
+  assert.throws(
+    () => Rumus.gantiBasisPU(NaN, 150, 60, 150, 100),
+    { message: 'Impedansi pu lama harus berupa angka' }
+  );
+  assert.throws(
+    () => Rumus.gantiBasisPU(0.1, '150', 60, 150, 100),
+    { message: 'Tegangan dasar lama kV harus berupa angka' }
+  );
+});
