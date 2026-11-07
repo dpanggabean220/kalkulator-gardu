@@ -1224,16 +1224,161 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 
-    // Handle form submission for calculator 10 (placeholder - no logic needed yet)
+    // Handle form submission for calculator 10: Cek Grading Margin Dua Relay OCR
     const form10 = document.getElementById('form10');
     if (form10) {
         form10.addEventListener('submit', function(e) {
             e.preventDefault();
-            // Placeholder for future implementation
+
+            const iGangguanInput = document.getElementById('iGangguan10');
+            const marginMinInput = document.getElementById('marginMin10');
+            const tmsHilirInput = document.getElementById('tms10Hilir');
+            const isetHilirInput = document.getElementById('iset10Hilir');
+            const tmsHuluInput = document.getElementById('tms10Hulu');
+            const isetHuluInput = document.getElementById('iset10Hulu');
             const hasilDiv = document.getElementById('hasil10');
-            hasilDiv.innerHTML = '<strong>Kalkulator belum diimplementasi</strong>';
-            hasilDiv.classList.add('visible');
-            hasilDiv.style.color = '#666';
+
+            // Bersihkan hasil dan pesan error sebelumnya
+            hasilDiv.innerHTML = '';
+            hasilDiv.classList.remove('visible');
+            hasilDiv.style.color = '';
+            form10.querySelectorAll('.error').forEach(el => el.remove());
+            form10.querySelectorAll('input[type="number"]').forEach(input => {
+                input.classList.remove('error-input');
+            });
+
+            function showError(inputElem, message) {
+                inputElem.classList.add('error-input');
+                const errorElem = document.createElement('div');
+                errorElem.className = 'error';
+                errorElem.textContent = message;
+                inputElem.parentNode.insertBefore(errorElem, inputElem.nextSibling);
+            }
+
+            const hilirRadio = form10.querySelector('input[name="curveTypeHilir10"]:checked');
+            const kurvaHilir = hilirRadio ? hilirRadio.value : 'SI';
+            const huluRadio = form10.querySelector('input[name="curveTypeHulu10"]:checked');
+            const kurvaHulu = huluRadio ? huluRadio.value : 'SI';
+
+            // Validasi input kosong
+            let hasEmpty = false;
+            if (iGangguanInput.value.trim() === '') {
+                showError(iGangguanInput, 'Arus gangguan harus diisi');
+                hasEmpty = true;
+            }
+            if (marginMinInput.value.trim() === '') {
+                showError(marginMinInput, 'Margin minimum harus diisi');
+                hasEmpty = true;
+            }
+            if (tmsHilirInput.value.trim() === '') {
+                showError(tmsHilirInput, 'TMS relay hilir harus diisi');
+                hasEmpty = true;
+            }
+            if (isetHilirInput.value.trim() === '') {
+                showError(isetHilirInput, 'I_set relay hilir harus diisi');
+                hasEmpty = true;
+            }
+            if (tmsHuluInput.value.trim() === '') {
+                showError(tmsHuluInput, 'TMS relay hulu harus diisi');
+                hasEmpty = true;
+            }
+            if (isetHuluInput.value.trim() === '') {
+                showError(isetHuluInput, 'I_set relay hulu harus diisi');
+                hasEmpty = true;
+            }
+
+            if (hasEmpty) {
+                return;
+            }
+
+            try {
+                const I_gangguan = parseFloat(iGangguanInput.value);
+                const marginMin = parseFloat(marginMinInput.value);
+                const hilir = {
+                    kurva: kurvaHilir,
+                    TMS: parseFloat(tmsHilirInput.value),
+                    I_set: parseFloat(isetHilirInput.value)
+                };
+                const hulu = {
+                    kurva: kurvaHulu,
+                    TMS: parseFloat(tmsHuluInput.value),
+                    I_set: parseFloat(isetHuluInput.value)
+                };
+
+                const result = Rumus.gradingMarginOCR(I_gangguan, hilir, hulu, marginMin);
+
+                const formatTime = (t) => t !== null ? t.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' s' : 'Relay tidak bekerja';
+                const formatInput = (num) => num.toLocaleString('id-ID', { maximumFractionDigits: 6 });
+
+                // Curve parameters
+                const curveParams = {
+                    SI: { k: 0.14, alpha: 0.02 },
+                    VI: { k: 13.5, alpha: 1 },
+                    EI: { k: 80, alpha: 2 }
+                };
+
+                const k_hilir = curveParams[hilir.kurva].k;
+                const alpha_hilir = curveParams[hilir.kurva].alpha;
+                const k_hulu = curveParams[hulu.kurva].k;
+                const alpha_hulu = curveParams[hulu.kurva].alpha;
+
+                const statusMap = {
+                    'selektif': 'Selektif',
+                    'margin kurang': 'Margin kurang',
+                    'tidak selektif': 'Tidak selektif',
+                    'hulu tidak bekerja': 'Relay hulu tidak bekerja',
+                    'hilir tidak bekerja': 'Relay hilir tidak bekerja',
+                    'kedua tidak bekerja': 'Kedua relay tidak bekerja'
+                };
+                const statusTeks = statusMap[result.status] || result.status;
+
+                let perhitunganHTML = '<strong>Perhitungan:</strong><br>';
+                if (result.t_hilir !== null) {
+                    const ratioHilir = I_gangguan / hilir.I_set;
+                    perhitunganHTML += `&nbsp;&nbsp;&nbsp;&nbsp;t_hilir = ${formatInput(hilir.TMS)} × ${k_hilir.toLocaleString('id-ID')} / ((${formatInput(I_gangguan)} / ${formatInput(hilir.I_set)})^${alpha_hilir.toLocaleString('id-ID')} − 1) = ${formatInput(hilir.TMS)} × ${k_hilir.toLocaleString('id-ID')} / (${formatInput(ratioHilir)}^${alpha_hilir.toLocaleString('id-ID')} − 1) = ${result.t_hilir.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} s<br>`;
+                } else {
+                    perhitunganHTML += `&nbsp;&nbsp;&nbsp;&nbsp;t_hilir: Relay hilir tidak bekerja karena I / I_set ≤ 1 (${formatInput(I_gangguan)} / ${formatInput(hilir.I_set)} = ${formatInput(I_gangguan / hilir.I_set)})<br>`;
+                }
+
+                if (result.t_hulu !== null) {
+                    const ratioHulu = I_gangguan / hulu.I_set;
+                    perhitunganHTML += `&nbsp;&nbsp;&nbsp;&nbsp;t_hulu = ${formatInput(hulu.TMS)} × ${k_hulu.toLocaleString('id-ID')} / ((${formatInput(I_gangguan)} / ${formatInput(hulu.I_set)})^${alpha_hulu.toLocaleString('id-ID')} − 1) = ${formatInput(hulu.TMS)} × ${k_hulu.toLocaleString('id-ID')} / (${formatInput(ratioHulu)}^${alpha_hulu.toLocaleString('id-ID')} − 1) = ${result.t_hulu.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} s<br>`;
+                } else {
+                    perhitunganHTML += `&nbsp;&nbsp;&nbsp;&nbsp;t_hulu: Relay hulu tidak bekerja karena I / I_set ≤ 1 (${formatInput(I_gangguan)} / ${formatInput(hulu.I_set)} = ${formatInput(I_gangguan / hulu.I_set)})<br>`;
+                }
+
+                if (result.margin !== null) {
+                    perhitunganHTML += `&nbsp;&nbsp;&nbsp;&nbsp;margin = ${result.t_hulu.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} − ${result.t_hilir.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} = ${result.margin.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} s → ${statusTeks}`;
+                } else {
+                    perhitunganHTML += `&nbsp;&nbsp;&nbsp;&nbsp;margin tidak dapat dihitung karena salah satu atau kedua relay tidak bekerja → ${statusTeks}`;
+                }
+
+                hasilDiv.innerHTML = `
+                    <strong>Waktu kerja relay hilir (t_hilir):</strong> ${formatTime(result.t_hilir)}<br>
+                    <strong>Waktu kerja relay hulu (t_hulu):</strong> ${formatTime(result.t_hulu)}<br>
+                    <strong>Grading margin:</strong> ${result.margin !== null ? result.margin.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' s' : '-'}<br>
+                    <strong>Status:</strong> ${statusTeks}<br>
+                    <strong>Rumus:</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;t = TMS × k / ((I / I_set)^α − 1)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;margin = t_hulu − t_hilir<br>
+                    ${perhitunganHTML}
+                `;
+                hasilDiv.classList.add('visible');
+            } catch (error) {
+                if (error.message.includes('Arus gangguan')) {
+                    showError(iGangguanInput, error.message);
+                } else if (error.message.includes('Margin minimum')) {
+                    showError(marginMinInput, error.message);
+                } else if (error.message.includes('TMS relay hilir')) {
+                    showError(tmsHilirInput, error.message);
+                } else if (error.message.includes('I_set relay hilir')) {
+                    showError(isetHilirInput, error.message);
+                } else if (error.message.includes('TMS relay hulu')) {
+                    showError(tmsHuluInput, error.message);
+                } else if (error.message.includes('I_set relay hulu')) {
+                    showError(isetHuluInput, error.message);
+                }
+            }
         });
     }
 

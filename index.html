@@ -256,7 +256,40 @@
         <section id="kalkulator10">
             <h2>Cek Grading Margin Dua Relay OCR</h2>
             <form id="form10">
-                <!-- Form akan ditambahkan nanti -->
+                <label for="iGangguan10">Arus gangguan (A):</label>
+                <input type="number" id="iGangguan10" name="iGangguan10" step="any">
+
+                <label for="marginMin10">Margin minimum (s):</label>
+                <input type="number" id="marginMin10" name="marginMin10" step="any">
+
+                <h3>Relay hilir (dekat gangguan)</h3>
+                <div class="mode-selection">
+                    <label>Pilih jenis kurva:</label>
+                    <div class="mode-options">
+                        <label><input type="radio" id="curveTypeHilir10SI" name="curveTypeHilir10" value="SI" checked> SI (Standard Inverse)</label>
+                        <label><input type="radio" id="curveTypeHilir10VI" name="curveTypeHilir10" value="VI"> VI (Very Inverse)</label>
+                        <label><input type="radio" id="curveTypeHilir10EI" name="curveTypeHilir10" value="EI"> EI (Extremely Inverse)</label>
+                    </div>
+                </div>
+                <label for="tms10Hilir">TMS:</label>
+                <input type="number" id="tms10Hilir" name="tms10Hilir" step="any">
+                <label for="iset10Hilir">Arus set I_set (A):</label>
+                <input type="number" id="iset10Hilir" name="iset10Hilir" step="any">
+
+                <h3>Relay hulu (cadangan)</h3>
+                <div class="mode-selection">
+                    <label>Pilih jenis kurva:</label>
+                    <div class="mode-options">
+                        <label><input type="radio" id="curveTypeHulu10SI" name="curveTypeHulu10" value="SI" checked> SI (Standard Inverse)</label>
+                        <label><input type="radio" id="curveTypeHulu10VI" name="curveTypeHulu10" value="VI"> VI (Very Inverse)</label>
+                        <label><input type="radio" id="curveTypeHulu10EI" name="curveTypeHulu10" value="EI"> EI (Extremely Inverse)</label>
+                    </div>
+                </div>
+                <label for="tms10Hulu">TMS:</label>
+                <input type="number" id="tms10Hulu" name="tms10Hulu" step="any">
+                <label for="iset10Hulu">Arus set I_set (A):</label>
+                <input type="number" id="iset10Hulu" name="iset10Hulu" step="any">
+
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil10" class="hasil"></div>
