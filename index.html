@@ -401,7 +401,47 @@
         <section id="kalkulator17">
             <h2>Konversi Per-Unit</h2>
             <form id="form17">
-                <!-- Form akan ditambahkan nanti -->
+                <div class="mode-selection">
+                    <label>Pilih mode:</label>
+                    <div class="mode-options">
+                        <label><input type="radio" name="modePU17" value="besaran_dasar" checked> Besaran dasar</label>
+                        <label><input type="radio" name="modePU17" value="ohm_ke_pu"> Ohm ke pu</label>
+                        <label><input type="radio" name="modePU17" value="ganti_basis"> Ganti basis</label>
+                    </div>
+                </div>
+
+                <!-- Mode 1: Besaran dasar -->
+                <div id="mode-pu-besaran-dasar17" class="mode-content">
+                    <label for="kvDasar17">Tegangan dasar (kV):</label>
+                    <input type="number" id="kvDasar17" name="kvDasar17" step="any">
+                    <label for="mvaDasar17">Daya dasar (MVA):</label>
+                    <input type="number" id="mvaDasar17" name="mvaDasar17" step="any">
+                </div>
+
+                <!-- Mode 2: Ohm ke pu -->
+                <div id="mode-pu-ohm-ke-pu17" class="mode-content" style="display: none;">
+                    <label for="zOhm17">Impedansi (Ω):</label>
+                    <input type="number" id="zOhm17" name="zOhm17" step="any">
+                    <label for="kvOhm17">Tegangan dasar (kV):</label>
+                    <input type="number" id="kvOhm17" name="kvOhm17" step="any">
+                    <label for="mvaOhm17">Daya dasar (MVA):</label>
+                    <input type="number" id="mvaOhm17" name="mvaOhm17" step="any">
+                </div>
+
+                <!-- Mode 3: Ganti basis -->
+                <div id="mode-pu-ganti-basis17" class="mode-content" style="display: none;">
+                    <label for="zPuLama17">Impedansi lama (pu):</label>
+                    <input type="number" id="zPuLama17" name="zPuLama17" step="any">
+                    <label for="kvLama17">Tegangan dasar lama (kV):</label>
+                    <input type="number" id="kvLama17" name="kvLama17" step="any">
+                    <label for="mvaLama17">Daya dasar lama (MVA):</label>
+                    <input type="number" id="mvaLama17" name="mvaLama17" step="any">
+                    <label for="kvBaru17">Tegangan dasar baru (kV):</label>
+                    <input type="number" id="kvBaru17" name="kvBaru17" step="any">
+                    <label for="mvaBaru17">Daya dasar baru (MVA):</label>
+                    <input type="number" id="mvaBaru17" name="mvaBaru17" step="any">
+                </div>
+
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil17" class="hasil"></div>

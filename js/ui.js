@@ -2005,6 +2005,211 @@ if (form15) {
         });
     }
 
+    // Handle form submission for calculator 17
+    const form17 = document.getElementById('form17');
+    if (form17) {
+        const modeRadios17 = form17.querySelectorAll('input[name="modePU17"]');
+        const modeContents17 = {
+            besaran_dasar: document.getElementById('mode-pu-besaran-dasar17'),
+            ohm_ke_pu: document.getElementById('mode-pu-ohm-ke-pu17'),
+            ganti_basis: document.getElementById('mode-pu-ganti-basis17')
+        };
+
+        function showSelectedMode17() {
+            modeRadios17.forEach(radio => {
+                if (radio.checked) {
+                    const mode = radio.value;
+                    Object.values(modeContents17).forEach(content => {
+                        if (content) content.style.display = 'none';
+                    });
+                    if (modeContents17[mode]) {
+                        modeContents17[mode].style.display = 'block';
+                    }
+                }
+            });
+        }
+
+        modeRadios17.forEach(radio => {
+            radio.addEventListener('change', showSelectedMode17);
+        });
+
+        showSelectedMode17();
+
+        form17.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            let selectedMode = 'besaran_dasar';
+            const checkedRadio = form17.querySelector('input[name="modePU17"]:checked');
+            if (checkedRadio) {
+                selectedMode = checkedRadio.value;
+            }
+
+            const hasilDiv = document.getElementById('hasil17');
+            hasilDiv.innerHTML = '';
+            hasilDiv.classList.remove('visible');
+
+            // Hapus pesan error lama dan kelas error-input
+            form17.querySelectorAll('.error').forEach(el => el.remove());
+            form17.querySelectorAll('input[type="number"]').forEach(input => {
+                input.classList.remove('error-input');
+            });
+
+            function showError(inputElem, message) {
+                inputElem.classList.add('error-input');
+                const errorElem = document.createElement('div');
+                errorElem.className = 'error';
+                errorElem.textContent = message;
+                inputElem.parentNode.insertBefore(errorElem, inputElem.nextSibling);
+            }
+
+            const formatInput = (num) => num.toLocaleString('id-ID', { maximumFractionDigits: 6 });
+
+            try {
+                if (selectedMode === 'besaran_dasar') {
+                    const kvInput = document.getElementById('kvDasar17');
+                    const mvaInput = document.getElementById('mvaDasar17');
+
+                    if (kvInput.value.trim() === '') {
+                        throw new Error('Tegangan dasar kV harus diisi');
+                    }
+                    if (mvaInput.value.trim() === '') {
+                        throw new Error('Daya dasar MVA harus diisi');
+                    }
+
+                    const kV = parseFloat(kvInput.value);
+                    const MVA = parseFloat(mvaInput.value);
+
+                    const result = Rumus.besaranDasarPU(kV, MVA);
+                    const zBaseFormatted = result.Z_base.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Ω';
+                    const iBaseFormatted = result.I_base.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' A';
+
+                    hasilDiv.innerHTML = `
+                        <strong>Impedansi dasar Z_base:</strong> ${zBaseFormatted}<br>
+                        <strong>Arus dasar I_base:</strong> ${iBaseFormatted}<br>
+                        <strong>Rumus:</strong><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Z_base = kV² / MVA<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;I_base = MVA × 1.000 / (√3 × kV)<br>
+                        <strong>Perhitungan:</strong><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Z_base = ${formatInput(kV)}² / ${formatInput(MVA)} = ${zBaseFormatted}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;I_base = ${formatInput(MVA)} × 1.000 / (√3 × ${formatInput(kV)}) = ${iBaseFormatted}
+                    `;
+                    hasilDiv.classList.add('visible');
+                } else if (selectedMode === 'ohm_ke_pu') {
+                    const zOhmInput = document.getElementById('zOhm17');
+                    const kvInput = document.getElementById('kvOhm17');
+                    const mvaInput = document.getElementById('mvaOhm17');
+
+                    if (zOhmInput.value.trim() === '') {
+                        throw new Error('Impedansi harus diisi');
+                    }
+                    if (kvInput.value.trim() === '') {
+                        throw new Error('Tegangan dasar kV harus diisi');
+                    }
+                    if (mvaInput.value.trim() === '') {
+                        throw new Error('Daya dasar MVA harus diisi');
+                    }
+
+                    const Z_ohm = parseFloat(zOhmInput.value);
+                    const kV = parseFloat(kvInput.value);
+                    const MVA = parseFloat(mvaInput.value);
+
+                    const result = Rumus.ohmKePU(Z_ohm, kV, MVA);
+                    const base = Rumus.besaranDasarPU(kV, MVA);
+                    const puFormatted = result.toLocaleString('id-ID', { minimumFractionDigits: 4, maximumFractionDigits: 4 }) + ' pu';
+                    const zBaseFormatted = base.Z_base.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Ω';
+
+                    hasilDiv.innerHTML = `
+                        <strong>Impedansi per-unit Z_pu:</strong> ${puFormatted}<br>
+                        <strong>Impedansi dasar Z_base:</strong> ${zBaseFormatted}<br>
+                        <strong>Rumus:</strong><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Z_base = kV² / MVA<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Z_pu = Z_ohm / Z_base<br>
+                        <strong>Perhitungan:</strong><br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Z_base = ${formatInput(kV)}² / ${formatInput(MVA)} = ${zBaseFormatted}<br>
+                        &nbsp;&nbsp;&nbsp;&nbsp;Z_pu = ${formatInput(Z_ohm)} / ${base.Z_base.toLocaleString('id-ID', { maximumFractionDigits: 6 })} = ${puFormatted}
+                    `;
+                    hasilDiv.classList.add('visible');
+                } else if (selectedMode === 'ganti_basis') {
+                    const zPuLamaInput = document.getElementById('zPuLama17');
+                    const kvLamaInput = document.getElementById('kvLama17');
+                    const mvaLamaInput = document.getElementById('mvaLama17');
+                    const kvBaruInput = document.getElementById('kvBaru17');
+                    const mvaBaruInput = document.getElementById('mvaBaru17');
+
+                    if (zPuLamaInput.value.trim() === '') {
+                        throw new Error('Impedansi pu lama harus diisi');
+                    }
+                    if (kvLamaInput.value.trim() === '') {
+                        throw new Error('Tegangan dasar lama kV harus diisi');
+                    }
+                    if (mvaLamaInput.value.trim() === '') {
+                        throw new Error('Daya dasar lama MVA harus diisi');
+                    }
+                    if (kvBaruInput.value.trim() === '') {
+                        throw new Error('Tegangan dasar baru kV harus diisi');
+                    }
+                    if (mvaBaruInput.value.trim() === '') {
+                        throw new Error('Daya dasar baru MVA harus diisi');
+                    }
+
+                    const Z_pu_lama = parseFloat(zPuLamaInput.value);
+                    const kV_lama = parseFloat(kvLamaInput.value);
+                    const MVA_lama = parseFloat(mvaLamaInput.value);
+                    const kV_baru = parseFloat(kvBaruInput.value);
+                    const MVA_baru = parseFloat(mvaBaruInput.value);
+
+                    const result = Rumus.gantiBasisPU(Z_pu_lama, kV_lama, MVA_lama, kV_baru, MVA_baru);
+                    const puBaruFormatted = result.toLocaleString('id-ID', { minimumFractionDigits: 4, maximumFractionDigits: 4 }) + ' pu';
+
+                    hasilDiv.innerHTML = `
+                        <strong>Impedansi per-unit baru Z_pu_baru:</strong> ${puBaruFormatted}<br>
+                        <strong>Rumus:</strong> Z_pu_baru = Z_pu_lama × (kV_lama / kV_baru)² × (MVA_baru / MVA_lama)<br>
+                        <strong>Perhitungan:</strong> Z_pu_baru = ${formatInput(Z_pu_lama)} × (${formatInput(kV_lama)} / ${formatInput(kV_baru)})² × (${formatInput(MVA_baru)} / ${formatInput(MVA_lama)}) = ${puBaruFormatted}
+                    `;
+                    hasilDiv.classList.add('visible');
+                }
+            } catch (error) {
+                if (selectedMode === 'besaran_dasar') {
+                    const kvInput = document.getElementById('kvDasar17');
+                    const mvaInput = document.getElementById('mvaDasar17');
+                    if (error.message.includes('Tegangan dasar')) {
+                        showError(kvInput, error.message);
+                    } else if (error.message.includes('Daya dasar')) {
+                        showError(mvaInput, error.message);
+                    }
+                } else if (selectedMode === 'ohm_ke_pu') {
+                    const zOhmInput = document.getElementById('zOhm17');
+                    const kvInput = document.getElementById('kvOhm17');
+                    const mvaInput = document.getElementById('mvaOhm17');
+                    if (error.message.includes('Impedansi')) {
+                        showError(zOhmInput, error.message);
+                    } else if (error.message.includes('Tegangan dasar')) {
+                        showError(kvInput, error.message);
+                    } else if (error.message.includes('Daya dasar')) {
+                        showError(mvaInput, error.message);
+                    }
+                } else if (selectedMode === 'ganti_basis') {
+                    const zPuLamaInput = document.getElementById('zPuLama17');
+                    const kvLamaInput = document.getElementById('kvLama17');
+                    const mvaLamaInput = document.getElementById('mvaLama17');
+                    const kvBaruInput = document.getElementById('kvBaru17');
+                    const mvaBaruInput = document.getElementById('mvaBaru17');
+                    if (error.message.includes('Impedansi pu lama')) {
+                        showError(zPuLamaInput, error.message);
+                    } else if (error.message.includes('Tegangan dasar lama')) {
+                        showError(kvLamaInput, error.message);
+                    } else if (error.message.includes('Daya dasar lama')) {
+                        showError(mvaLamaInput, error.message);
+                    } else if (error.message.includes('Tegangan dasar baru')) {
+                        showError(kvBaruInput, error.message);
+                    } else if (error.message.includes('Daya dasar baru')) {
+                        showError(mvaBaruInput, error.message);
+                    }
+                }
+            }
+        });
+    }
+
     // Pendaftaran Service Worker untuk PWA
     if ('serviceWorker' in navigator && (location.protocol === 'https:' || location.hostname === 'localhost')) {
         // Manifest hanya dimuat di https/localhost; lewat file:// diblokir CORS
