@@ -1060,6 +1060,44 @@ Rumus.gradingMarginOCR = function(I_gangguan, hilir, hulu, marginMin) {
     };
 };
 
+/**
+ * Kalkulator 14: Hitung andongan konduktor dan panjang konduktor (pendekatan parabola)
+ * @param {number} w - Berat konduktor dalam kg/m
+ * @param {number} L - Panjang gawang dalam m
+ * @param {number} T - Tegangan tarik horizontal dalam kN
+ * @returns {{D: number, S: number}} Objek dengan andongan D (m) dan panjang konduktor S (m)
+ * @throws {Error} Jika input tidak valid
+ */
+Rumus.andonganKonduktor = function(w, L, T) {
+    if (typeof w !== 'number' || isNaN(w)) {
+        throw new Error('Berat konduktor harus berupa angka');
+    }
+    if (w <= 0) {
+        throw new Error('Berat konduktor harus lebih besar dari nol');
+    }
+    if (typeof L !== 'number' || isNaN(L)) {
+        throw new Error('Panjang gawang harus berupa angka');
+    }
+    if (L <= 0) {
+        throw new Error('Panjang gawang harus lebih besar dari nol');
+    }
+    if (typeof T !== 'number' || isNaN(T)) {
+        throw new Error('Tegangan tarik harus berupa angka');
+    }
+    if (T <= 0) {
+        throw new Error('Tegangan tarik harus lebih besar dari nol');
+    }
+
+    const g = 9.80665;
+    const D = (w * g * L * L) / (8 * T * 1000);
+    const S = L + (8 * D * D) / (3 * L);
+
+    return {
+        D: D,
+        S: S
+    };
+};
+
 // Supaya bisa diuji dengan Node
 if (typeof module !== "undefined") {
     module.exports = Rumus;

@@ -1543,3 +1543,65 @@ test('Grading margin OCR - input tidak valid: arus gangguan 0, TMS hulu negatif,
     { message: 'Kurva relay hulu harus SI, VI, atau EI' }
   );
 });
+
+
+// Kalkulator 14: Andongan Konduktor
+test('Andongan konduktor - kasus 1: 1,621 kg/m, 400 m, 30 kN', async t => {
+  const result = Rumus.andonganKonduktor(1.621, 400, 30);
+  assertCloseTo(result.D, 10.598, 0.001, 'D harus ~10.598 m');
+  assertCloseTo(result.S, 400.749, 0.001, 'S harus ~400.749 m');
+});
+
+test('Andongan konduktor - kasus 2: 1 kg/m, 100 m, 10 kN', async t => {
+  const result = Rumus.andonganKonduktor(1, 100, 10);
+  assertCloseTo(result.D, 1.226, 0.001, 'D harus ~1.226 m');
+  assertCloseTo(result.S, 100.040, 0.001, 'S harus ~100.040 m');
+});
+
+test('Andongan konduktor - kasus 3: 1,621 kg/m, 200 m, 30 kN', async t => {
+  const result = Rumus.andonganKonduktor(1.621, 200, 30);
+  assertCloseTo(result.D, 2.649, 0.001, 'D harus ~2.649 m');
+  assertCloseTo(result.S, 200.094, 0.001, 'S harus ~200.094 m');
+});
+
+test('Andongan konduktor - input tidak valid: w = 0', async t => {
+  assert.throws(
+    () => Rumus.andonganKonduktor(0, 400, 30),
+    { message: 'Berat konduktor harus lebih besar dari nol' }
+  );
+});
+
+test('Andongan konduktor - input tidak valid: L = 0', async t => {
+  assert.throws(
+    () => Rumus.andonganKonduktor(1.621, 0, 30),
+    { message: 'Panjang gawang harus lebih besar dari nol' }
+  );
+});
+
+test('Andongan konduktor - input tidak valid: T = 0', async t => {
+  assert.throws(
+    () => Rumus.andonganKonduktor(1.621, 400, 0),
+    { message: 'Tegangan tarik harus lebih besar dari nol' }
+  );
+});
+
+test('Andongan konduktor - input tidak valid: w negatif', async t => {
+  assert.throws(
+    () => Rumus.andonganKonduktor(-1.621, 400, 30),
+    { message: 'Berat konduktor harus lebih besar dari nol' }
+  );
+});
+
+test('Andongan konduktor - input tidak valid: T negatif', async t => {
+  assert.throws(
+    () => Rumus.andonganKonduktor(1.621, 400, -30),
+    { message: 'Tegangan tarik harus lebih besar dari nol' }
+  );
+});
+
+test('Andongan konduktor - input tidak valid: L bukan angka', async t => {
+  assert.throws(
+    () => Rumus.andonganKonduktor(1.621, '400', 30),
+    { message: 'Panjang gawang harus berupa angka' }
+  );
+});
