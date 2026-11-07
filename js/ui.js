@@ -2019,6 +2019,81 @@ if (form15) {
         });
     }
 
+    // Handle form submission for calculator 14: Andongan Konduktor
+    const form14 = document.getElementById('form14');
+    if (form14) {
+        form14.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const beratInput = document.getElementById('beratKonduktor14');
+            const panjangInput = document.getElementById('panjangGawang14');
+            const teganganInput = document.getElementById('teganganTarik14');
+            const hasilDiv = document.getElementById('hasil14');
+
+            // Clear previous results and errors
+            hasilDiv.innerHTML = '';
+            hasilDiv.classList.remove('visible');
+            beratInput.classList.remove('error-input');
+            panjangInput.classList.remove('error-input');
+            teganganInput.classList.remove('error-input');
+
+            // Remove any existing error messages
+            form14.querySelectorAll('.error').forEach(el => el.remove());
+
+            function showError(inputElem, message) {
+                inputElem.classList.add('error-input');
+                const errorElem = document.createElement('div');
+                errorElem.className = 'error';
+                errorElem.textContent = message;
+                inputElem.parentNode.insertBefore(errorElem, inputElem.nextSibling);
+            }
+
+            const formatInput = (num) => num.toLocaleString('id-ID', { maximumFractionDigits: 6 });
+
+            try {
+                if (beratInput.value.trim() === '') {
+                    throw new Error('Berat konduktor harus diisi');
+                }
+                if (panjangInput.value.trim() === '') {
+                    throw new Error('Panjang gawang harus diisi');
+                }
+                if (teganganInput.value.trim() === '') {
+                    throw new Error('Tegangan tarik harus diisi');
+                }
+
+                const w = parseFloat(beratInput.value);
+                const L = parseFloat(panjangInput.value);
+                const T = parseFloat(teganganInput.value);
+
+                const result = Rumus.andonganKonduktor(w, L, T);
+
+                const dFormatted = result.D.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' m';
+                const sFormatted = result.S.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 }) + ' m';
+
+                hasilDiv.innerHTML = `
+                    <strong>Andongan (D):</strong> ${dFormatted}<br>
+                    <strong>Panjang konduktor (S):</strong> ${sFormatted}<br>
+                    <strong>Rumus:</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;D = w × g × L² / (8 × T)<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;S = L + 8 × D² / (3 × L)<br>
+                    <strong>Perhitungan:</strong><br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;D = ${formatInput(w)} × 9,80665 × ${formatInput(L)}² / (8 × ${formatInput(T)} × 1.000) = ${dFormatted}<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;S = ${formatInput(L)} + 8 × ${result.D.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })}² / (3 × ${formatInput(L)}) = ${sFormatted}<br>
+                    <small><em>Pendekatan parabola, berlaku jika andongan jauh lebih kecil dari panjang gawang.</em></small>
+                `;
+                hasilDiv.classList.add('visible');
+            } catch (error) {
+                if (error.message.includes('Berat konduktor')) {
+                    showError(beratInput, error.message);
+                } else if (error.message.includes('Panjang gawang')) {
+                    showError(panjangInput, error.message);
+                } else if (error.message.includes('Tegangan tarik')) {
+                    showError(teganganInput, error.message);
+                }
+            }
+        });
+    }
+
     // Handle form submission for calculator 16
     const form16 = document.getElementById('form16');
     if (form16) {
