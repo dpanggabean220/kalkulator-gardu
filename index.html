@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kalkulator Teknik Gardu Induk</title>
-    <link rel="stylesheet" href="css/style.css?v=3">
+    <link rel="stylesheet" href="css/style.css?v=4">
     <meta name="theme-color" content="#2563EB" media="(prefers-color-scheme: light)">
     <meta name="theme-color" content="#2563EB" media="(prefers-color-scheme: dark)">
     <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
@@ -256,7 +256,7 @@
         <section id="kalkulator10">
             <h2>Cek Grading Margin Dua Relay OCR</h2>
             <form id="form10">
-                <label for="iGangguan10">Arus gangguan (A):</label>
+                <label for="iGangguan10">Arus gangguan (A, sisi primer):</label>
                 <input type="text" inputmode="decimal" id="iGangguan10" name="iGangguan10">
 
                 <label for="marginMin10">Margin minimum (s):</label>
@@ -273,7 +273,7 @@
                 </div>
                 <label for="tms10Hilir">TMS:</label>
                 <input type="text" inputmode="decimal" id="tms10Hilir" name="tms10Hilir">
-                <label for="iset10Hilir">Arus set I_set (A):</label>
+                <label for="iset10Hilir">Arus set I_set (A, sisi primer):</label>
                 <input type="text" inputmode="decimal" id="iset10Hilir" name="iset10Hilir">
 
                 <h3>Relay hulu (cadangan)</h3>
@@ -287,7 +287,7 @@
                 </div>
                 <label for="tms10Hulu">TMS:</label>
                 <input type="text" inputmode="decimal" id="tms10Hulu" name="tms10Hulu">
-                <label for="iset10Hulu">Arus set I_set (A):</label>
+                <label for="iset10Hulu">Arus set I_set (A, sisi primer):</label>
                 <input type="text" inputmode="decimal" id="iset10Hulu" name="iset10Hulu">
 
                 <button type="submit">Hitung</button>
@@ -525,8 +525,9 @@
     </main>
     <footer>
         <p>Hasil kalkulator ini untuk estimasi dan pembelajaran. Bukan pengganti setting proteksi resmi, standar, atau prosedur kerja yang berlaku.</p>
+        <p class="versi">Versi 2 · November 2026</p>
     </footer>
-    <script src="js/rumus.js?v=3"></script>
-    <script src="js/ui.js?v=4"></script>
+    <script src="js/rumus.js?v=4"></script>
+    <script src="js/ui.js?v=5"></script>
 </body>
 </html>
