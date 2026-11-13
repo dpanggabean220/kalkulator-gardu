@@ -1605,3 +1605,20 @@ test('Andongan konduktor - input tidak valid: L bukan angka', async t => {
     { message: 'Panjang gawang harus berupa angka' }
   );
 });
+
+// Rumus.bacaAngka
+test('bacaAngka - berbagai format angka dan penanganan error', async t => {
+  assert.strictEqual(Rumus.bacaAngka('1.234,5'), 1234.5);
+  assert.strictEqual(Rumus.bacaAngka('0,1'), 0.1);
+  assert.strictEqual(Rumus.bacaAngka('1.621'), 1.621);
+  assert.strictEqual(Rumus.bacaAngka('400'), 400);
+  assert.strictEqual(Rumus.bacaAngka('-5'), -5);
+  assert.strictEqual(Rumus.bacaAngka('-0,5'), -0.5);
+  assert.strictEqual(Rumus.bacaAngka('  12,5  '), 12.5);
+  assert.strictEqual(Rumus.bacaAngka(150), 150);
+  assert.ok(isNaN(Rumus.bacaAngka('')));
+  assert.ok(isNaN(Rumus.bacaAngka('   ')));
+  assert.ok(isNaN(Rumus.bacaAngka('abc')));
+  assert.ok(isNaN(Rumus.bacaAngka('1,2,3')));
+  assert.ok(isNaN(Rumus.bacaAngka('1..2')));
+});

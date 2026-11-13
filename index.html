@@ -62,9 +62,9 @@
             <h2>Arus Nominal 3 Fasa</h2>
             <form id="form1">
                 <label for="daya1">Daya S (MVA):</label>
-                <input type="number" id="daya1" name="daya1" step="any" required>
+                <input type="text" inputmode="decimal" id="daya1" name="daya1" required>
                 <label for="tegangan1">Tegangan V (kV):</label>
-                <input type="number" id="tegangan1" name="tegangan1" step="any" required>
+                <input type="text" inputmode="decimal" id="tegangan1" name="tegangan1" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil1" class="hasil"></div>
@@ -75,9 +75,9 @@
             <h2>Segitiga Daya</h2>
             <form id="form2">
                 <label for="dayaAktif">Daya aktif P (MW):</label>
-                <input type="number" id="dayaAktif" name="dayaAktif" step="any" required>
+                <input type="text" inputmode="decimal" id="dayaAktif" name="dayaAktif" required>
                 <label for="dayaReaktif">Daya reaktif Q (MVAR):</label>
-                <input type="number" id="dayaReaktif" name="dayaReaktif" step="any" required>
+                <input type="text" inputmode="decimal" id="dayaReaktif" name="dayaReaktif" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil2" class="hasil"></div>
@@ -97,29 +97,29 @@
                 <!-- Mode 1: MVA terukur (default) -->
                 <div id="mode-mva" class="mode-content">
                     <label for="s_ukur">Daya terukur S_ukur (MVA):</label>
-                    <input type="number" id="s_ukur" name="s_ukur" step="any">
+                    <input type="text" inputmode="decimal" id="s_ukur" name="s_ukur">
                     <label for="s_rating">Daya rating S_rating (MVA):</label>
-                    <input type="number" id="s_rating" name="s_rating" step="any">
+                    <input type="text" inputmode="decimal" id="s_rating" name="s_rating">
                 </div>
 
                 <!-- Mode 2: MW dan MVAR -->
                 <div id="mode-mw_mvar" class="mode-content" style="display: none;">
                     <label for="p_ukur">Daya aktif P_ukur (MW):</label>
-                    <input type="number" id="p_ukur" name="p_ukur" step="any">
+                    <input type="text" inputmode="decimal" id="p_ukur" name="p_ukur">
                     <label for="q_ukur">Daya reaktif Q_ukur (MVAR):</label>
-                    <input type="number" id="q_ukur" name="q_ukur" step="any">
+                    <input type="text" inputmode="decimal" id="q_ukur" name="q_ukur">
                     <label for="s_rating2">Daya rating S_rating (MVA):</label>
-                    <input type="number" id="s_rating2" name="s_rating2" step="any">
+                    <input type="text" inputmode="decimal" id="s_rating2" name="s_rating2">
                 </div>
 
                 <!-- Mode 3: Arus terukur -->
                 <div id="mode-arus" class="mode-content" style="display: none;">
                     <label for="arus_ukur">Arus terukur I_ukur (A):</label>
-                    <input type="number" id="arus_ukur" name="arus_ukur" step="any">
+                    <input type="text" inputmode="decimal" id="arus_ukur" name="arus_ukur">
                     <label for="tegangan_ukur">Tegangan terukur V_ukur (kV):</label>
-                    <input type="number" id="tegangan_ukur" name="tegangan_ukur" step="any">
+                    <input type="text" inputmode="decimal" id="tegangan_ukur" name="tegangan_ukur">
                     <label for="s_rating3">Daya rating S_rating (MVA):</label>
-                    <input type="number" id="s_rating3" name="s_rating3" step="any">
+                    <input type="text" inputmode="decimal" id="s_rating3" name="s_rating3">
                 </div>
 
                 <button type="submit">Hitung</button>
@@ -132,11 +132,11 @@
             <h2>Tegangan per Posisi Tap</h2>
             <form id="form4">
                 <label for="v_nominal">Tegangan nominal V_nominal (kV):</label>
-                <input type="number" id="v_nominal" name="v_nominal" step="any" required>
+                <input type="text" inputmode="decimal" id="v_nominal" name="v_nominal" required>
                 <label for="tapen">Posisi tap n:</label>
-                <input type="number" id="tapen" name="tapen" step="any" required>
+                <input type="text" inputmode="decimal" id="tapen" name="tapen" required>
                 <label for="step">Persentase langkah step (%):</label>
-                <input type="number" id="step" name="step" step="any" required>
+                <input type="text" inputmode="decimal" id="step" name="step" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil4" class="hasil"></div>
@@ -147,11 +147,11 @@
             <h2>Kapasitor Perbaikan cos φ</h2>
             <form id="form5">
                 <label for="daya5">Daya aktif P (MW):</label>
-                <input type="number" id="daya5" name="daya5" step="any" required>
+                <input type="text" inputmode="decimal" id="daya5" name="daya5" required>
                 <label for="cosPhi1">Faktor daya awal cos φ1:</label>
-                <input type="number" id="cosPhi1" name="cosPhi1" step="any" min="0" max="1" required>
+                <input type="text" inputmode="decimal" id="cosPhi1" name="cosPhi1" required>
                 <label for="cosPhi2">Faktor daya target cos φ2:</label>
-                <input type="number" id="cosPhi2" name="cosPhi2" step="any" min="0" max="1" required>
+                <input type="text" inputmode="decimal" id="cosPhi2" name="cosPhi2" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil5" class="hasil"></div>
@@ -162,9 +162,9 @@
             <h2>Arus Hubung Singkat dari MVA Hubung Singkat</h2>
             <form id="form6">
                 <label for="mvasc">MVA hubung singkat:</label>
-                <input type="number" id="mvasc" name="mvasc" step="any" required>
+                <input type="text" inputmode="decimal" id="mvasc" name="mvasc" required>
                 <label for="tegangan6">Tegangan (kV):</label>
-                <input type="number" id="tegangan6" name="tegangan6" step="any" required>
+                <input type="text" inputmode="decimal" id="tegangan6" name="tegangan6" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil6" class="hasil"></div>
@@ -175,11 +175,11 @@
             <h2>Arus Hubung Singkat di Terminal Trafo</h2>
             <form id="form7">
                 <label for="daya7">Daya trafo S (MVA):</label>
-                <input type="number" id="daya7" name="daya7" step="any" required>
+                <input type="text" inputmode="decimal" id="daya7" name="daya7" required>
                 <label for="tegangan7">Tegangan V (kV):</label>
-                <input type="number" id="tegangan7" name="tegangan7" step="any" required>
+                <input type="text" inputmode="decimal" id="tegangan7" name="tegangan7" required>
                 <label for="z_percent7">Impedansi Z%:</label>
-                <input type="number" id="z_percent7" name="z_percent7" step="any" required>
+                <input type="text" inputmode="decimal" id="z_percent7" name="z_percent7" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil7" class="hasil"></div>
@@ -190,11 +190,11 @@
             <h2>Arus Sekunder CT dan Burden</h2>
             <form id="form8">
                 <label for="i_prim">Arus primer I_prim (A):</label>
-                <input type="number" id="i_prim" name="i_prim" step="any" required>
+                <input type="text" inputmode="decimal" id="i_prim" name="i_prim" required>
                 <label for="i_sek_rating">Arus sekunder rating I_sek_rating (A):</label>
-                <input type="number" id="i_sek_rating" name="i_sek_rating" step="any" required>
+                <input type="text" inputmode="decimal" id="i_sek_rating" name="i_sek_rating" required>
                 <label for="i_prim_rating">Arus primer rating I_prim_rating (A):</label>
-                <input type="number" id="i_prim_rating" name="i_prim_rating" step="any" required>
+                <input type="text" inputmode="decimal" id="i_prim_rating" name="i_prim_rating" required>
 
                 <div class="mode-selection">
                     <label>Pilih cara input tahanan kabel:</label>
@@ -207,24 +207,24 @@
                 <!-- Mode 1: Langsung input R_kabel -->
                 <div id="kabel-mode-direct" class="mode-content">
                     <label for="tahanan_relay_direct">Tahanan relay (Ω):</label>
-                    <input type="number" id="tahanan_relay_direct" name="tahanan_relay_direct" step="any">
+                    <input type="text" inputmode="decimal" id="tahanan_relay_direct" name="tahanan_relay_direct">
                     <label for="tahanan_kabel">Tahanan kabel total pulang-pergi (Ω):</label>
-                    <input type="number" id="tahanan_kabel" name="tahanan_kabel" step="any">
+                    <input type="text" inputmode="decimal" id="tahanan_kabel" name="tahanan_kabel">
                 </div>
 
                 <!-- Mode 2: Input panjang kabel dan luas penampang -->
                 <div id="kabel-mode-length" class="mode-content" style="display: none;">
                     <label for="tahanan_relay_length">Tahanan relay (Ω):</label>
-                    <input type="number" id="tahanan_relay_length" name="tahanan_relay_length" step="any">
+                    <input type="text" inputmode="decimal" id="tahanan_relay_length" name="tahanan_relay_length">
                     <label for="panjang_kabel">Panjang kabel satu arah (m):</label>
-                    <input type="number" id="panjang_kabel" name="panjang_kabel" step="any">
+                    <input type="text" inputmode="decimal" id="panjang_kabel" name="panjang_kabel">
                     <label for="luas_penampang">Luas penampang kabel (mm²):</label>
-                    <input type="number" id="luas_penampang" name="luas_penampang" step="any">
+                    <input type="text" inputmode="decimal" id="luas_penampang" name="luas_penampang">
                     <small>Catatan: Nilai 0,0175 Ω·mm²/m adalah resistivitas tembaga pada 20 °C</small>
                 </div>
 
                 <label for="burden_rating">Rating burden CT (VA) (opsional):</label>
-                <input type="number" id="burden_rating" name="burden_rating" step="any">
+                <input type="text" inputmode="decimal" id="burden_rating" name="burden_rating">
 
                 <button type="submit">Hitung</button>
             </form>
@@ -244,9 +244,9 @@
                     </div>
                 </div>
                 <label for="tms">TMS:</label>
-                <input type="number" id="tms" name="tms" step="any" required>
+                <input type="text" inputmode="decimal" id="tms" name="tms" required>
                 <label for="ratio">I/I_s:</label>
-                <input type="number" id="ratio" name="ratio" step="any" required>
+                <input type="text" inputmode="decimal" id="ratio" name="ratio" required>
                 <button type="submit">Hitung</button>
             </form>
             <div id="hasil9" class="hasil"></div>
@@ -257,10 +257,10 @@
             <h2>Cek Grading Margin Dua Relay OCR</h2>
             <form id="form10">
                 <label for="iGangguan10">Arus gangguan (A):</label>
-                <input type="number" id="iGangguan10" name="iGangguan10" step="any">
+                <input type="text" inputmode="decimal" id="iGangguan10" name="iGangguan10">
 
                 <label for="marginMin10">Margin minimum (s):</label>
-                <input type="number" id="marginMin10" name="marginMin10" step="any">
+                <input type="text" inputmode="decimal" id="marginMin10" name="marginMin10">
 
                 <h3>Relay hilir (dekat gangguan)</h3>
                 <div class="mode-selection">
@@ -272,9 +272,9 @@
                     </div>
                 </div>
                 <label for="tms10Hilir">TMS:</label>
-                <input type="number" id="tms10Hilir" name="tms10Hilir" step="any">
+                <input type="text" inputmode="decimal" id="tms10Hilir" name="tms10Hilir">
                 <label for="iset10Hilir">Arus set I_set (A):</label>
-                <input type="number" id="iset10Hilir" name="iset10Hilir" step="any">
+                <input type="text" inputmode="decimal" id="iset10Hilir" name="iset10Hilir">
 
                 <h3>Relay hulu (cadangan)</h3>
                 <div class="mode-selection">
@@ -286,9 +286,9 @@
                     </div>
                 </div>
                 <label for="tms10Hulu">TMS:</label>
-                <input type="number" id="tms10Hulu" name="tms10Hulu" step="any">
+                <input type="text" inputmode="decimal" id="tms10Hulu" name="tms10Hulu">
                 <label for="iset10Hulu">Arus set I_set (A):</label>
-                <input type="number" id="iset10Hulu" name="iset10Hulu" step="any">
+                <input type="text" inputmode="decimal" id="iset10Hulu" name="iset10Hulu">
 
                 <button type="submit">Hitung</button>
             </form>
@@ -309,13 +309,13 @@
                 <small>Catatan: Metode reaktansi lebih tahan terhadap pengaruh tahanan gangguan</small>
 
                 <label for="nilai_gangguan">Nilai gangguan (Ω):</label>
-                <input type="number" id="nilai_gangguan" name="nilai_gangguan" step="any" required>
+                <input type="text" inputmode="decimal" id="nilai_gangguan" name="nilai_gangguan" required>
 
                 <label for="nilai_per_km">Nilai per kilometer (Ω/km):</label>
-                <input type="number" id="nilai_per_km" name="nilai_per_km" step="any" required>
+                <input type="text" inputmode="decimal" id="nilai_per_km" name="nilai_per_km" required>
 
                 <label for="panjang_saluran">Panjang saluran (km) (opsional):</label>
-                <input type="number" id="panjang_saluran" name="panjang_saluran" step="any">
+                <input type="text" inputmode="decimal" id="panjang_saluran" name="panjang_saluran">
 
                 <button type="submit">Hitung</button>
             </form>
@@ -327,22 +327,22 @@
             <h2>Drop Tegangan Saluran 3 Fasa</h2>
             <form id="form12">
                 <label for="arus12">Arus I (A):</label>
-                <input type="number" id="arus12" name="arus12" step="any" required>
+                <input type="text" inputmode="decimal" id="arus12" name="arus12" required>
 
                 <label for="panjang12">Panjang saluran L (km):</label>
-                <input type="number" id="panjang12" name="panjang12" step="any" required>
+                <input type="text" inputmode="decimal" id="panjang12" name="panjang12" required>
 
                 <label for="resistansi12">Resistansi R (Ω/km):</label>
-                <input type="number" id="resistansi12" name="resistansi12" step="any" required>
+                <input type="text" inputmode="decimal" id="resistansi12" name="resistansi12" required>
 
                 <label for="reaktansi12">Reaktansi X (Ω/km):</label>
-                <input type="number" id="reaktansi12" name="reaktansi12" step="any" required>
+                <input type="text" inputmode="decimal" id="reaktansi12" name="reaktansi12" required>
 
                 <label for="cosPhi12">Faktor daya cos φ:</label>
-                <input type="number" id="cosPhi12" name="cosPhi12" step="any" min="0" max="1" required>
+                <input type="text" inputmode="decimal" id="cosPhi12" name="cosPhi12" required>
 
                 <label for="tegangan12">Tegangan V (kV):</label>
-                <input type="number" id="tegangan12" name="tegangan12" step="any" required>
+                <input type="text" inputmode="decimal" id="tegangan12" name="tegangan12" required>
 
                 <button type="submit">Hitung</button>
             </form>
@@ -354,13 +354,13 @@
             <h2>Rugi Daya Saluran</h2>
             <form id="form13">
                 <label for="arus13">Arus I (A):</label>
-                <input type="number" id="arus13" name="arus13" step="any" required>
+                <input type="text" inputmode="decimal" id="arus13" name="arus13" required>
 
                 <label for="resistansi13">Resistansi per fasa R (Ω/km):</label>
-                <input type="number" id="resistansi13" name="resistansi13" step="any" required>
+                <input type="text" inputmode="decimal" id="resistansi13" name="resistansi13" required>
 
                 <label for="panjang13">Panjang saluran L (km):</label>
-                <input type="number" id="panjang13" name="panjang13" step="any" required>
+                <input type="text" inputmode="decimal" id="panjang13" name="panjang13" required>
 
                 <button type="submit">Hitung</button>
             </form>
@@ -372,13 +372,13 @@
             <h2>Andongan Konduktor</h2>
             <form id="form14">
                 <label for="beratKonduktor14">Berat konduktor (kg/m):</label>
-                <input type="number" id="beratKonduktor14" name="beratKonduktor14" step="any">
+                <input type="text" inputmode="decimal" id="beratKonduktor14" name="beratKonduktor14">
 
                 <label for="panjangGawang14">Panjang gawang (m):</label>
-                <input type="number" id="panjangGawang14" name="panjangGawang14" step="any">
+                <input type="text" inputmode="decimal" id="panjangGawang14" name="panjangGawang14">
 
                 <label for="teganganTarik14">Tegangan tarik horizontal (kN):</label>
-                <input type="number" id="teganganTarik14" name="teganganTarik14" step="any">
+                <input type="text" inputmode="decimal" id="teganganTarik14" name="teganganTarik14">
 
                 <button type="submit">Hitung</button>
             </form>
@@ -390,13 +390,13 @@
             <h2>Indeks Polarisasi dan Rasio Absorpsi Dielektrik</h2>
             <form id="form15">
                 <label for="r30detik">Tahanan setelah 30 detik R₃₀ (MΩ):</label>
-                <input type="number" id="r30detik" name="r30detik" step="any">
+                <input type="text" inputmode="decimal" id="r30detik" name="r30detik">
 
                 <label for="r1menit">Tahanan setelah 1 menit R₁ (MΩ):</label>
-                <input type="number" id="r1menit" name="r1menit" step="any" required>
+                <input type="text" inputmode="decimal" id="r1menit" name="r1menit" required>
 
                 <label for="r10menit">Tahanan setelah 10 menit R₁₀ (MΩ):</label>
-                <input type="number" id="r10menit" name="r10menit" step="any">
+                <input type="text" inputmode="decimal" id="r10menit" name="r10menit">
 
                 <button type="submit">Hitung</button>
             </form>
@@ -408,7 +408,7 @@
             <h2>Koreksi Tekanan SF6 ke 20 °C</h2>
             <form id="form16">
                 <label for="tekanan16">Tekanan terukur:</label>
-                <input type="number" id="tekanan16" name="tekanan16" step="any" required>
+                <input type="text" inputmode="decimal" id="tekanan16" name="tekanan16" required>
 
                 <div class="mode-selection">
                     <label>Jenis tekanan:</label>
@@ -427,10 +427,10 @@
                 </div>
 
                 <label for="suhu16">Suhu gas saat pengukuran (°C):</label>
-                <input type="number" id="suhu16" name="suhu16" step="any" required>
+                <input type="text" inputmode="decimal" id="suhu16" name="suhu16" required>
 
                 <label for="batasMinimum16">Batas minimum pabrikan (tekanan relatif pada 20 °C):</label>
-                <input type="number" id="batasMinimum16" name="batasMinimum16" step="any">
+                <input type="text" inputmode="decimal" id="batasMinimum16" name="batasMinimum16">
                 <small>Catatan: Isi jika ingin membandingkan hasil dengan batas minimum. Nilai pada pelat nama GIS umumnya adalah tekanan relatif pada 20 °C.</small>
 
                 <button type="submit">Hitung</button>
@@ -454,33 +454,33 @@
                 <!-- Mode 1: Besaran dasar -->
                 <div id="mode-pu-besaran-dasar17" class="mode-content">
                     <label for="kvDasar17">Tegangan dasar (kV):</label>
-                    <input type="number" id="kvDasar17" name="kvDasar17" step="any">
+                    <input type="text" inputmode="decimal" id="kvDasar17" name="kvDasar17">
                     <label for="mvaDasar17">Daya dasar (MVA):</label>
-                    <input type="number" id="mvaDasar17" name="mvaDasar17" step="any">
+                    <input type="text" inputmode="decimal" id="mvaDasar17" name="mvaDasar17">
                 </div>
 
                 <!-- Mode 2: Ohm ke pu -->
                 <div id="mode-pu-ohm-ke-pu17" class="mode-content" style="display: none;">
                     <label for="zOhm17">Impedansi (Ω):</label>
-                    <input type="number" id="zOhm17" name="zOhm17" step="any">
+                    <input type="text" inputmode="decimal" id="zOhm17" name="zOhm17">
                     <label for="kvOhm17">Tegangan dasar (kV):</label>
-                    <input type="number" id="kvOhm17" name="kvOhm17" step="any">
+                    <input type="text" inputmode="decimal" id="kvOhm17" name="kvOhm17">
                     <label for="mvaOhm17">Daya dasar (MVA):</label>
-                    <input type="number" id="mvaOhm17" name="mvaOhm17" step="any">
+                    <input type="text" inputmode="decimal" id="mvaOhm17" name="mvaOhm17">
                 </div>
 
                 <!-- Mode 3: Ganti basis -->
                 <div id="mode-pu-ganti-basis17" class="mode-content" style="display: none;">
                     <label for="zPuLama17">Impedansi lama (pu):</label>
-                    <input type="number" id="zPuLama17" name="zPuLama17" step="any">
+                    <input type="text" inputmode="decimal" id="zPuLama17" name="zPuLama17">
                     <label for="kvLama17">Tegangan dasar lama (kV):</label>
-                    <input type="number" id="kvLama17" name="kvLama17" step="any">
+                    <input type="text" inputmode="decimal" id="kvLama17" name="kvLama17">
                     <label for="mvaLama17">Daya dasar lama (MVA):</label>
-                    <input type="number" id="mvaLama17" name="mvaLama17" step="any">
+                    <input type="text" inputmode="decimal" id="mvaLama17" name="mvaLama17">
                     <label for="kvBaru17">Tegangan dasar baru (kV):</label>
-                    <input type="number" id="kvBaru17" name="kvBaru17" step="any">
+                    <input type="text" inputmode="decimal" id="kvBaru17" name="kvBaru17">
                     <label for="mvaBaru17">Daya dasar baru (MVA):</label>
-                    <input type="number" id="mvaBaru17" name="mvaBaru17" step="any">
+                    <input type="text" inputmode="decimal" id="mvaBaru17" name="mvaBaru17">
                 </div>
 
                 <button type="submit">Hitung</button>
@@ -508,7 +508,7 @@
 
                 <div class="input-group">
                     <label for="nilai18">Nilai yang akan dikonversi:</label>
-                    <input type="number" id="nilai18" name="nilai18" step="any" required>
+                    <input type="text" inputmode="decimal" id="nilai18" name="nilai18" required>
                 </div>
 
                 <div class="input-group">

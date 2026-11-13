@@ -1098,6 +1098,42 @@ Rumus.andonganKonduktor = function(w, L, T) {
     };
 };
 
+/**
+ * Baca input angka dari string yang mungkin memakai koma atau titik desimal
+ * @param {string|number} teks - Teks input atau angka
+ * @returns {number} Nilai numerik atau NaN jika tidak valid
+ */
+Rumus.bacaAngka = function(teks) {
+    if (typeof teks === 'number') {
+        return teks;
+    }
+    if (typeof teks !== 'string') {
+        return NaN;
+    }
+    const bersih = teks.trim();
+    if (bersih === '') {
+        return NaN;
+    }
+
+    let hasilTeks = bersih;
+    if (hasilTeks.includes(',')) {
+        // Jika ada koma, titik dianggap pemisah ribuan (dibuang), koma menjadi desimal
+        const parts = hasilTeks.split(',');
+        if (parts.length > 2) {
+            return NaN;
+        }
+        hasilTeks = parts[0].replace(/\./g, '') + '.' + parts[1];
+    }
+
+    // Periksa format angka valid: opsional minus diawal, digit, opsional satu titik dan digit
+    if (!/^-?(\d+(\.\d+)?|\.\d+)$/.test(hasilTeks)) {
+        return NaN;
+    }
+
+    const num = Number(hasilTeks);
+    return isNaN(num) ? NaN : num;
+};
+
 // Supaya bisa diuji dengan Node
 if (typeof module !== "undefined") {
     module.exports = Rumus;

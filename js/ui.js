@@ -51,8 +51,8 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const S = parseFloat(dayaInput.value);
-                const V = parseFloat(teganganInput.value);
+                const S = Rumus.bacaAngka(dayaInput.value);
+                const V = Rumus.bacaAngka(teganganInput.value);
 
                 // Validate empty inputs
                 if (isNaN(S) || dayaInput.value.trim() === '') {
@@ -120,8 +120,8 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const P = parseFloat(pInput.value);
-                const Q = parseFloat(qInput.value);
+                const P = Rumus.bacaAngka(pInput.value);
+                const Q = Rumus.bacaAngka(qInput.value);
 
                 // Validate empty inputs
                 if (isNaN(P) || pInput.value.trim() === '') {
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', function() {
             });
 
             // Also remove error-input class from all inputs
-            const allInputs = form3.querySelectorAll('input[type="number"]');
+            const allInputs = form3.querySelectorAll('input[inputmode="decimal"]');
             allInputs.forEach(input => {
                 input.classList.remove('error-input');
             });
@@ -257,15 +257,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     const s_ratingInput = document.getElementById('s_rating');
 
                     // Validate empty inputs
-                    if (isNaN(parseFloat(s_ukurInput.value)) || s_ukurInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(s_ukurInput.value)) || s_ukurInput.value.trim() === '') {
                         throw new Error('Daya terukur S_ukur harus diisi');
                     }
-                    if (isNaN(parseFloat(s_ratingInput.value)) || s_ratingInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(s_ratingInput.value)) || s_ratingInput.value.trim() === '') {
                         throw new Error('Daya rating S_rating harus diisi');
                     }
 
-                    const S_ukur = parseFloat(s_ukurInput.value);
-                    const S_rating = parseFloat(s_ratingInput.value);
+                    const S_ukur = Rumus.bacaAngka(s_ukurInput.value);
+                    const S_rating = Rumus.bacaAngka(s_ratingInput.value);
 
                     // Validate non-negative for S_ukur and positive for S_rating
                     if (S_ukur < 0) {
@@ -296,19 +296,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const s_ratingInput = document.getElementById('s_rating2');
 
                     // Validate empty inputs
-                    if (isNaN(parseFloat(p_ukurInput.value)) || p_ukurInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(p_ukurInput.value)) || p_ukurInput.value.trim() === '') {
                         throw new Error('Daya aktif P_ukur harus diisi');
                     }
-                    if (isNaN(parseFloat(q_ukurInput.value)) || q_ukurInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(q_ukurInput.value)) || q_ukurInput.value.trim() === '') {
                         throw new Error('Daya reaktif Q_ukur harus diisi');
                     }
-                    if (isNaN(parseFloat(s_ratingInput.value)) || s_ratingInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(s_ratingInput.value)) || s_ratingInput.value.trim() === '') {
                         throw new Error('Daya rating S_rating harus diisi');
                     }
 
-                    const P = parseFloat(p_ukurInput.value);
-                    const Q = parseFloat(q_ukurInput.value);
-                    const S_rating = parseFloat(s_ratingInput.value);
+                    const P = Rumus.bacaAngka(p_ukurInput.value);
+                    const Q = Rumus.bacaAngka(q_ukurInput.value);
+                    const S_rating = Rumus.bacaAngka(s_ratingInput.value);
 
                     // Validate S_rating positive
                     if (S_rating <= 0) {
@@ -345,19 +345,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const s_ratingInput = document.getElementById('s_rating3');
 
                     // Validate empty inputs
-                    if (isNaN(parseFloat(arus_ukurInput.value)) || arus_ukurInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(arus_ukurInput.value)) || arus_ukurInput.value.trim() === '') {
                         throw new Error('Arus terukur I_ukur harus diisi');
                     }
-                    if (isNaN(parseFloat(tegangan_ukurInput.value)) || tegangan_ukurInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(tegangan_ukurInput.value)) || tegangan_ukurInput.value.trim() === '') {
                         throw new Error('Tegangan terukur V_ukur harus diisi');
                     }
-                    if (isNaN(parseFloat(s_ratingInput.value)) || s_ratingInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(s_ratingInput.value)) || s_ratingInput.value.trim() === '') {
                         throw new Error('Daya rating S_rating harus diisi');
                     }
 
-                    const I_ukur = parseFloat(arus_ukurInput.value);
-                    const V_ukur = parseFloat(tegangan_ukurInput.value);
-                    const S_rating = parseFloat(s_ratingInput.value);
+                    const I_ukur = Rumus.bacaAngka(arus_ukurInput.value);
+                    const V_ukur = Rumus.bacaAngka(tegangan_ukurInput.value);
+                    const S_rating = Rumus.bacaAngka(s_ratingInput.value);
 
                     // Validate positive for V_ukur and S_rating
                     if (V_ukur <= 0) {
@@ -495,8 +495,8 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const MVA_sc = parseFloat(mvascInput.value);
-                const V = parseFloat(tegangan6Input.value);
+                const MVA_sc = Rumus.bacaAngka(mvascInput.value);
+                const V = Rumus.bacaAngka(tegangan6Input.value);
 
                 // Validate empty inputs
                 if (isNaN(MVA_sc) || mvascInput.value.trim() === '') {
@@ -566,9 +566,9 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const S = parseFloat(daya7Input.value);
-                const V = parseFloat(tegangan7Input.value);
-                const Z_percent = parseFloat(zPercent7Input.value);
+                const S = Rumus.bacaAngka(daya7Input.value);
+                const V = Rumus.bacaAngka(tegangan7Input.value);
+                const Z_percent = Rumus.bacaAngka(zPercent7Input.value);
 
                 // Validate empty inputs
                 if (isNaN(S) || daya7Input.value.trim() === '') {
@@ -700,13 +700,13 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const I_prim = parseFloat(iPrimInput.value);
-                const I_sek_rating = parseFloat(iSekRatingInput.value);
-                const I_prim_rating = parseFloat(iPrimRatingInput.value);
+                const I_prim = Rumus.bacaAngka(iPrimInput.value);
+                const I_sek_rating = Rumus.bacaAngka(iSekRatingInput.value);
+                const I_prim_rating = Rumus.bacaAngka(iPrimRatingInput.value);
 
                 let burdenRating = null;
                 if (burdenRatingInput.value.trim() !== '') {
-                    burdenRating = parseFloat(burdenRatingInput.value);
+                    burdenRating = Rumus.bacaAngka(burdenRatingInput.value);
                     // Validate burden rating if provided
                     if (isNaN(burdenRating)) {
                         throw new Error('Rating burden CT harus berupa angka');
@@ -744,15 +744,15 @@ document.addEventListener('DOMContentLoaded', function() {
                     const tahananKabelInput = document.getElementById('tahanan_kabel');
 
                     // Validate empty inputs
-                    if (isNaN(parseFloat(tahananRelayInput.value)) || tahananRelayInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(tahananRelayInput.value)) || tahananRelayInput.value.trim() === '') {
                         throw new Error('Tahanan relay harus diisi');
                     }
-                    if (isNaN(parseFloat(tahananKabelInput.value)) || tahananKabelInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(tahananKabelInput.value)) || tahananKabelInput.value.trim() === '') {
                         throw new Error('Tahanan kabel total pulang-pergi harus diisi');
                     }
 
-                    R_relay = parseFloat(tahananRelayInput.value);
-                    R_kabel = parseFloat(tahananKabelInput.value);
+                    R_relay = Rumus.bacaAngka(tahananRelayInput.value);
+                    R_kabel = Rumus.bacaAngka(tahananKabelInput.value);
 
                     // Validate resistance values
                     if (R_relay < 0) {
@@ -768,19 +768,19 @@ document.addEventListener('DOMContentLoaded', function() {
                     const luasPenampangInput = document.getElementById('luas_penampang');
 
                     // Validate empty inputs
-                    if (isNaN(parseFloat(tahananRelayInput.value)) || tahananRelayInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(tahananRelayInput.value)) || tahananRelayInput.value.trim() === '') {
                         throw new Error('Tahanan relay harus diisi');
                     }
-                    if (isNaN(parseFloat(panjangKabelInput.value)) || panjangKabelInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(panjangKabelInput.value)) || panjangKabelInput.value.trim() === '') {
                         throw new Error('Panjang kabel satu arah harus diisi');
                     }
-                    if (isNaN(parseFloat(luasPenampangInput.value)) || luasPenampangInput.value.trim() === '') {
+                    if (isNaN(Rumus.bacaAngka(luasPenampangInput.value)) || luasPenampangInput.value.trim() === '') {
                         throw new Error('Luas penampang kabel harus diisi');
                     }
 
-                    R_relay = parseFloat(tahananRelayInput.value);
-                    const panjangKabel = parseFloat(panjangKabelInput.value);
-                    const luasPenampang = parseFloat(luasPenampangInput.value);
+                    R_relay = Rumus.bacaAngka(tahananRelayInput.value);
+                    const panjangKabel = Rumus.bacaAngka(panjangKabelInput.value);
+                    const luasPenampang = Rumus.bacaAngka(luasPenampangInput.value);
 
                     // Validate values
                     if (R_relay < 0) {
@@ -959,9 +959,9 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const V_nominal = parseFloat(vNominalInput.value);
-                const n = parseFloat(tapNInput.value);
-                const stepPercent = parseFloat(stepInput.value);
+                const V_nominal = Rumus.bacaAngka(vNominalInput.value);
+                const n = Rumus.bacaAngka(tapNInput.value);
+                const stepPercent = Rumus.bacaAngka(stepInput.value);
 
                 // Validate empty inputs
                 if (isNaN(V_nominal) || vNominalInput.value.trim() === '') {
@@ -1040,9 +1040,9 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const P = parseFloat(dayaInput.value);
-                const cosPhi1 = parseFloat(cosPhi1Input.value);
-                const cosPhi2 = parseFloat(cosPhi2Input.value);
+                const P = Rumus.bacaAngka(dayaInput.value);
+                const cosPhi1 = Rumus.bacaAngka(cosPhi1Input.value);
+                const cosPhi2 = Rumus.bacaAngka(cosPhi2Input.value);
 
                 // Validate empty inputs
                 if (isNaN(P) || dayaInput.value.trim() === '') {
@@ -1127,8 +1127,8 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const TMS = parseFloat(tmsInput.value);
-                const I_over_Is = parseFloat(ratioInput.value);
+                const TMS = Rumus.bacaAngka(tmsInput.value);
+                const I_over_Is = Rumus.bacaAngka(ratioInput.value);
 
                 // Validate empty inputs
                 if (isNaN(TMS) || tmsInput.value.trim() === '') {
@@ -1243,7 +1243,7 @@ document.addEventListener('DOMContentLoaded', function() {
             hasilDiv.classList.remove('visible');
             hasilDiv.style.color = '';
             form10.querySelectorAll('.error').forEach(el => el.remove());
-            form10.querySelectorAll('input[type="number"]').forEach(input => {
+            form10.querySelectorAll('input[inputmode="decimal"]').forEach(input => {
                 input.classList.remove('error-input');
             });
 
@@ -1292,17 +1292,17 @@ document.addEventListener('DOMContentLoaded', function() {
             }
 
             try {
-                const I_gangguan = parseFloat(iGangguanInput.value);
-                const marginMin = parseFloat(marginMinInput.value);
+                const I_gangguan = Rumus.bacaAngka(iGangguanInput.value);
+                const marginMin = Rumus.bacaAngka(marginMinInput.value);
                 const hilir = {
                     kurva: kurvaHilir,
-                    TMS: parseFloat(tmsHilirInput.value),
-                    I_set: parseFloat(isetHilirInput.value)
+                    TMS: Rumus.bacaAngka(tmsHilirInput.value),
+                    I_set: Rumus.bacaAngka(isetHilirInput.value)
                 };
                 const hulu = {
                     kurva: kurvaHulu,
-                    TMS: parseFloat(tmsHuluInput.value),
-                    I_set: parseFloat(isetHuluInput.value)
+                    TMS: Rumus.bacaAngka(tmsHuluInput.value),
+                    I_set: Rumus.bacaAngka(isetHuluInput.value)
                 };
 
                 const result = Rumus.gradingMarginOCR(I_gangguan, hilir, hulu, marginMin);
@@ -1415,13 +1415,13 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const nilai_gangguan = parseFloat(nilaiGangguanInput.value);
-                const nilai_per_km = parseFloat(nilaiPerKmInput.value);
+                const nilai_gangguan = Rumus.bacaAngka(nilaiGangguanInput.value);
+                const nilai_per_km = Rumus.bacaAngka(nilaiPerKmInput.value);
                 let panjang_saluran = null;
 
                 // Parse panjang saluran if provided
                 if (panjangSaluranInput.value.trim() !== '') {
-                    panjang_saluran = parseFloat(panjangSaluranInput.value);
+                    panjang_saluran = Rumus.bacaAngka(panjangSaluranInput.value);
                 }
 
                 // Validate empty inputs
@@ -1533,12 +1533,12 @@ document.addEventListener('DOMContentLoaded', function() {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const I = parseFloat(arusInput.value);
-                const L = parseFloat(panjangInput.value);
-                const R = parseFloat(resistansiInput.value);
-                const X = parseFloat(reaktansiInput.value);
-                const cosPhi = parseFloat(cosPhiInput.value);
-                const V = parseFloat(teganganInput.value);
+                const I = Rumus.bacaAngka(arusInput.value);
+                const L = Rumus.bacaAngka(panjangInput.value);
+                const R = Rumus.bacaAngka(resistansiInput.value);
+                const X = Rumus.bacaAngka(reaktansiInput.value);
+                const cosPhi = Rumus.bacaAngka(cosPhiInput.value);
+                const V = Rumus.bacaAngka(teganganInput.value);
 
                 // Validate empty inputs
                 if (isNaN(I) || arusInput.value.trim() === '') {
@@ -1653,9 +1653,9 @@ if (form15) {
 
         try {
             // Parse input values (empty strings become undefined for optional fields)
-            const R30detik = r30detikInput.value.trim() === '' ? undefined : parseFloat(r30detikInput.value);
-            const R1menit = parseFloat(r1menitInput.value);
-            const R10menit = r10menitInput.value.trim() === '' ? undefined : parseFloat(r10menitInput.value);
+            const R30detik = r30detikInput.value.trim() === '' ? undefined : Rumus.bacaAngka(r30detikInput.value);
+            const R1menit = Rumus.bacaAngka(r1menitInput.value);
+            const R10menit = r10menitInput.value.trim() === '' ? undefined : Rumus.bacaAngka(r10menitInput.value);
 
             // Validate required input R1menit
             if (isNaN(R1menit) || r1menitInput.value.trim() === '') {
@@ -1808,7 +1808,7 @@ if (form15) {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const nilai = parseFloat(nilaiInput.value);
+                const nilai = Rumus.bacaAngka(nilaiInput.value);
 
                 // Validate empty input
                 if (isNaN(nilai) || nilaiInput.value.trim() === '') {
@@ -1960,9 +1960,9 @@ if (form15) {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const I = parseFloat(arusInput.value);
-                const R = parseFloat(resistansiInput.value);
-                const L = parseFloat(panjangInput.value);
+                const I = Rumus.bacaAngka(arusInput.value);
+                const R = Rumus.bacaAngka(resistansiInput.value);
+                const L = Rumus.bacaAngka(panjangInput.value);
 
                 // Validate empty inputs
                 if (isNaN(I) || arusInput.value.trim() === '') {
@@ -2061,9 +2061,9 @@ if (form15) {
                     throw new Error('Tegangan tarik harus diisi');
                 }
 
-                const w = parseFloat(beratInput.value);
-                const L = parseFloat(panjangInput.value);
-                const T = parseFloat(teganganInput.value);
+                const w = Rumus.bacaAngka(beratInput.value);
+                const L = Rumus.bacaAngka(panjangInput.value);
+                const T = Rumus.bacaAngka(teganganInput.value);
 
                 const result = Rumus.andonganKonduktor(w, L, T);
 
@@ -2136,13 +2136,13 @@ if (form15) {
             existingErrors.forEach(el => el.remove());
 
             try {
-                const P_ukur = parseFloat(tekananInput.value);
-                const T = parseFloat(suhuInput.value);
+                const P_ukur = Rumus.bacaAngka(tekananInput.value);
+                const T = Rumus.bacaAngka(suhuInput.value);
                 let batasMinimum = null;
 
                 // Parse batas minimum if provided
                 if (batasMinimumInput.value.trim() !== '') {
-                    batasMinimum = parseFloat(batasMinimumInput.value);
+                    batasMinimum = Rumus.bacaAngka(batasMinimumInput.value);
                 }
 
                 // Validate empty inputs
@@ -2270,7 +2270,7 @@ if (form15) {
 
             // Hapus pesan error lama dan kelas error-input
             form17.querySelectorAll('.error').forEach(el => el.remove());
-            form17.querySelectorAll('input[type="number"]').forEach(input => {
+            form17.querySelectorAll('input[inputmode="decimal"]').forEach(input => {
                 input.classList.remove('error-input');
             });
 
@@ -2296,8 +2296,8 @@ if (form15) {
                         throw new Error('Daya dasar MVA harus diisi');
                     }
 
-                    const kV = parseFloat(kvInput.value);
-                    const MVA = parseFloat(mvaInput.value);
+                    const kV = Rumus.bacaAngka(kvInput.value);
+                    const MVA = Rumus.bacaAngka(mvaInput.value);
 
                     const result = Rumus.besaranDasarPU(kV, MVA);
                     const zBaseFormatted = result.Z_base.toLocaleString('id-ID', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' Ω';
@@ -2329,9 +2329,9 @@ if (form15) {
                         throw new Error('Daya dasar MVA harus diisi');
                     }
 
-                    const Z_ohm = parseFloat(zOhmInput.value);
-                    const kV = parseFloat(kvInput.value);
-                    const MVA = parseFloat(mvaInput.value);
+                    const Z_ohm = Rumus.bacaAngka(zOhmInput.value);
+                    const kV = Rumus.bacaAngka(kvInput.value);
+                    const MVA = Rumus.bacaAngka(mvaInput.value);
 
                     const result = Rumus.ohmKePU(Z_ohm, kV, MVA);
                     const base = Rumus.besaranDasarPU(kV, MVA);
@@ -2372,11 +2372,11 @@ if (form15) {
                         throw new Error('Daya dasar baru MVA harus diisi');
                     }
 
-                    const Z_pu_lama = parseFloat(zPuLamaInput.value);
-                    const kV_lama = parseFloat(kvLamaInput.value);
-                    const MVA_lama = parseFloat(mvaLamaInput.value);
-                    const kV_baru = parseFloat(kvBaruInput.value);
-                    const MVA_baru = parseFloat(mvaBaruInput.value);
+                    const Z_pu_lama = Rumus.bacaAngka(zPuLamaInput.value);
+                    const kV_lama = Rumus.bacaAngka(kvLamaInput.value);
+                    const MVA_lama = Rumus.bacaAngka(mvaLamaInput.value);
+                    const kV_baru = Rumus.bacaAngka(kvBaruInput.value);
+                    const MVA_baru = Rumus.bacaAngka(mvaBaruInput.value);
 
                     const result = Rumus.gantiBasisPU(Z_pu_lama, kV_lama, MVA_lama, kV_baru, MVA_baru);
                     const puBaruFormatted = result.toLocaleString('id-ID', { minimumFractionDigits: 4, maximumFractionDigits: 4 }) + ' pu';

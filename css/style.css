@@ -142,6 +142,7 @@ a:hover {
 
 button,
 input[type="number"],
+input[inputmode="decimal"],
 .nav-toggle {
     font-family: inherit;
     font-size: var(--font-size-base);
@@ -170,7 +171,8 @@ button:disabled {
     cursor: not-allowed;
 }
 
-input[type="number"] {
+input[type="number"],
+input[inputmode="decimal"] {
     width: 100%;
     padding: var(--space-1) var(--space-1-5);
     border: 1px solid var(--color-border);
@@ -179,12 +181,14 @@ input[type="number"] {
     color: var(--color-foreground);
     transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
-input[type="number"]:focus {
+input[type="number"]:focus,
+input[inputmode="decimal"]:focus {
     outline: 2px solid var(--color-ring);
     outline-offset: 2px;
     border-color: var(--color-primary);
 }
-input[type="number"].error-input {
+input[type="number"].error-input,
+input[inputmode="decimal"].error-input {
     border-color: var(--color-destructive);
     background-color: var(--color-error-bg);
 }
@@ -403,6 +407,6 @@ section h2 {
 }
 
 /* Ensure clickable elements have pointer cursor */
-button, input[type="number"], .nav-toggle, label, .mode-options label, .nav-category a {
+button, input[type="number"], input[inputmode="decimal"], .nav-toggle, label, .mode-options label, .nav-category a {
     cursor: pointer;
 }
