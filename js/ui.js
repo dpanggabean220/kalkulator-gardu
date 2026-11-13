@@ -185,7 +185,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const form3 = document.getElementById('form3');
     if (form3) {
         // First, set up mode switching
-        const modeRadios = form3.querySelectorAll('input[name="mode3"]');
+        const modeRadios = document.querySelectorAll('#kalkulator3 input[name="mode3"]');
         const modeContents = {
             mva: document.getElementById('mode-mva'),
             mw_mvar: document.getElementById('mode-mw_mvar'),
@@ -699,6 +699,14 @@ document.addEventListener('DOMContentLoaded', function() {
             const existingErrors = form8.querySelectorAll('.error');
             existingErrors.forEach(el => el.remove());
 
+            // Get selected cable mode
+            let selectedKabelMode = '';
+            kabelModeRadios.forEach(radio => {
+                if (radio.checked) {
+                    selectedKabelMode = radio.value;
+                }
+            });
+
             try {
                 const I_prim = Rumus.bacaAngka(iPrimInput.value);
                 const I_sek_rating = Rumus.bacaAngka(iSekRatingInput.value);
@@ -727,16 +735,10 @@ document.addEventListener('DOMContentLoaded', function() {
                     throw new Error('Arus primer rating I_prim_rating harus diisi');
                 }
 
-                // Get selected cable mode
-                let selectedKabelMode = '';
-                kabelModeRadios.forEach(radio => {
-                    if (radio.checked) {
-                        selectedKabelMode = radio.value;
-                    }
-                });
-
                 let R_relay;
                 let R_kabel;
+                let panjangKabel;
+                let luasPenampang;
 
                 if (selectedKabelMode === 'direct') {
                     // Mode 1: Direct input of resistances
@@ -779,8 +781,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     }
 
                     R_relay = Rumus.bacaAngka(tahananRelayInput.value);
-                    const panjangKabel = Rumus.bacaAngka(panjangKabelInput.value);
-                    const luasPenampang = Rumus.bacaAngka(luasPenampangInput.value);
+                    panjangKabel = Rumus.bacaAngka(panjangKabelInput.value);
+                    luasPenampang = Rumus.bacaAngka(luasPenampangInput.value);
 
                     // Validate values
                     if (R_relay < 0) {
@@ -841,7 +843,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (selectedKabelMode === 'length') {
                     hasilHTML += `<br><strong>Perhitungan tahanan kabel:</strong><br>
                     &nbsp;&nbsp;&nbsp;&nbsp;R_kabel = 2 × L × ρ / A<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;R_kabel = 2 × ${panjangKabel} × 0,0175 / ${luasPenampang} = ${R_kabel.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Ω<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;R_kabel = 2 × ${panjangKabel.toLocaleString('id-ID')} × 0,0175 / ${luasPenampang.toLocaleString('id-ID')} = ${R_kabel.toLocaleString('id-ID', { minimumFractionDigits: 3, maximumFractionDigits: 3 })} Ω<br>
                     <small>Catatan: Nilai 0,0175 Ω·mm²/m adalah resistivitas tembaga pada 20 °C</small>`;
                 }
 
@@ -1362,6 +1364,7 @@ document.addEventListener('DOMContentLoaded', function() {
                     &nbsp;&nbsp;&nbsp;&nbsp;t = TMS × k / ((I / I_set)^α − 1)<br>
                     &nbsp;&nbsp;&nbsp;&nbsp;margin = t_hulu − t_hilir<br>
                     ${perhitunganHTML}
+                    <small><em>Semua arus dalam ampere sisi primer. Kalau setting relay dalam ampere sekunder, kalikan dengan rasio CT. Margin minimum sebaiknya sudah mencakup waktu buka PMT, overshoot, dan toleransi relay.</em></small>
                 `;
                 hasilDiv.classList.add('visible');
             } catch (error) {
