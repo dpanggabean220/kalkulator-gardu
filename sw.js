@@ -1,4 +1,4 @@
-const CACHE_VERSION = "v1";
+const CACHE_VERSION = "v2";
 const CACHE_NAME = `kalkulator-gi-${CACHE_VERSION}`;
 
 // Files to cache - must match exactly what's used in index.html including ?v= parameters
@@ -6,9 +6,9 @@ const urlsToCache = [
     "./",
     "./index.html",
     "./manifest.json",
-    "./css/style.css?v=3",
-    "./js/rumus.js?v=3",
-    "./js/ui.js?v=4",
+    "./css/style.css?v=4",
+    "./js/rumus.js?v=4",
+    "./js/ui.js?v=5",
     "./icons/icon-192.png",
     "./icons/icon-512.png",
     "./icons/apple-touch-icon.png"
